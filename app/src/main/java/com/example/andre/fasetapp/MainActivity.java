@@ -1,13 +1,14 @@
 package com.example.andre.fasetapp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -15,6 +16,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,47 +30,50 @@ public class MainActivity extends AppCompatActivity {
     private EditText Password;
     private TextView Info;
     private Button Login;
-    public int counter = 5;
-    private FirebaseAuth firebaseAuth;
+    private int counter = 5;
     private TextView userRegistration;
-
-    // Used to load the 'native-lib' library on application startup.
-
+    private FirebaseAuth firebaseAuth;
+    private ProgressDialog progressDialog;
+    private TextView forgotPassword;
+    private DatabaseReference mDatabase;
+    private Button test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Example of a call to a native method
-        //TextView tv = (TextView) findViewById(R.id.sample_text);
-        // tv.setText(stringFromJNI());
-        Name = (EditText) findViewById(R.id.etName);
-        Password = (EditText) findViewById(R.id.etPassword);
-        Info = (TextView) findViewById(R.id.tvInfo);
-        userRegistration = (TextView) findViewById(R.id.tvRegister);
-        Login = (Button) findViewById(R.id.btnLogin);
+        Name = (EditText)findViewById(R.id.etName);
+        Password = (EditText)findViewById(R.id.etPassword);
+        Info = (TextView)findViewById(R.id.tvInfo);
+        Login = (Button)findViewById(R.id.btnLogin);
+        userRegistration = (TextView)findViewById(R.id.tvRegister);
+        forgotPassword = (TextView)findViewById(R.id.tvForgotPassword);
+        test = (Button)findViewById(R.id.button5);
 
+        Info.setText("No of attempts remaining: 5");
 
-        Info.setText("No of attempts remaining : 5 ");
         firebaseAuth = FirebaseAuth.getInstance();
+        progressDialog = new ProgressDialog(this);
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+            }
+        });
 
 
-
-        if(user != null)
-        {
+        if(user != null){
             finish();
             startActivity(new Intent(MainActivity.this, SecondActivity.class));
         }
 
-
         Login.setOnClickListener(new View.OnClickListener() {
-
+            @Override
             public void onClick(View view) {
                 validate(Name.getText().toString(), Password.getText().toString());
-
             }
         });
 
@@ -73,30 +84,76 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, PasswordActivity.class));
+            }
+        });
     }
 
     private void validate(String userName, String userPassword) {
+
+        progressDialog.setMessage("Please wait");
+        progressDialog.show();
+
         firebaseAuth.signInWithEmailAndPassword(userName, userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()) {
-                    Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(MainActivity.this, SecondActivity.class));
+                if(task.isSuccessful()){
+                    progressDialog.dismiss();
+                    //Toast.makeText(MainActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                    checkEmailVerification();
                 }else{
                     Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                    counter--;
+                    Info.setText("No of attempts remaining: " + counter);
+                    progressDialog.dismiss();
+                    if(counter == 0){
+                        Login.setEnabled(false);
+                    }
                 }
             }
         });
 
+
     }
 
+    private void checkEmailVerification(){
+        FirebaseUser firebaseUser = firebaseAuth.getInstance().getCurrentUser();
+        Boolean emailflag = firebaseUser.isEmailVerified();
+        /*
+        mDatabase = FirebaseDatabase.getInstance().getReference("users").child("userInfo");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String name = dataSnapshot.getValue().toString();
+                //String age =
 
+                UserProfile userProfile = new UserProfile();
+                userProfile.setUserAge("20");
+                userProfile.setUserName(name);
+                userProfile.setUserEmail("hey@gmail.com");
+                userProfile.setUserUid("1111666");
+            }
 
-    /**
-     * A native method that is implemented by the 'native-lib' native library,
-     * which is packaged with this application.
-     */
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+*/
+
+        startActivity(new Intent(MainActivity.this, SecondActivity.class));
+
+//        if(emailflag){
+//            finish();
+//            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+//        }else{
+//            Toast.makeText(this, "Verify your email", Toast.LENGTH_SHORT).show();
+//            firebaseAuth.signOut();
+//        }
+    }
 
 }
-

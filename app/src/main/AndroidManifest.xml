@@ -2,6 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.andre.fasetapp">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,7 +22,25 @@
         </activity>
         <activity android:name=".SecondActivity" />
         <activity android:name=".RegistrationActivity" />
-        <activity android:name=".photoInfoInsert"></activity>
+        <activity android:name=".photoInfoInsert" />
+        <activity android:name=".uploadFashionActivity" />
+        <activity android:name=".ViewDataActivity" />
+        <activity
+            android:name=".PasswordActivity"
+            android:label="@string/title_activity_password"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".UpdatePassword" />
+        <activity android:name=".UpdateProfile" />
+        <activity android:name=".ImagesActivity" />
+        <activity android:name=".PickFashion" />
+        <activity android:name=".FashionCollection" />
+        <activity android:name=".GalleryActivity" />
+        <activity android:name=".DisplayImagesActivity" />
+        <activity android:name=".DisplayImagesGalleryActivity" />
+        <activity android:name=".ImageShowActivity" />
+        <activity android:name=".EmptyActivity" />
+        <activity android:name=".CalendarActivity"></activity>
     </application>
 
 </manifest>
