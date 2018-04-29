@@ -1,37 +1,27 @@
 package com.example.andre.fasetapp;
 
 import android.content.Intent;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-
-import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.Calendar;
 
 public class SecondActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private TextView textViewUserId;
-    private Button addPhotoFrmGallery;
+    private Button Clothecabinet;
     private Button customize;
     private Button gallery;
+    private Button add;
     private String userIdString;
     private DatabaseReference mFirebaseDatabase;
     private FirebaseDatabase mFirebaseInstance;
@@ -51,10 +41,13 @@ public class SecondActivity extends AppCompatActivity {
 
         textViewUserId = (TextView)findViewById(R.id.textView);
         logout = (Button)findViewById(R.id.btnLogout);
-        addPhotoFrmGallery = (Button)findViewById(R.id.btnAddPhotoFrmGallery);
+        Clothecabinet= (Button)findViewById(R.id.clothecabinet);
+
+
         customize = (Button)findViewById(R.id.buttonAddCustomize);
         gallery = (Button)findViewById(R.id.btnGallery);
         imgchoose = (ImageView)findViewById(R.id.imageView3);
+        add=(Button)findViewById(R.id.button7);
         FirebaseUser userLogin = FirebaseAuth.getInstance().getCurrentUser();
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -89,14 +82,22 @@ public class SecondActivity extends AppCompatActivity {
         gallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SecondActivity.this, CalendarActivity.class));
+                startActivity(new Intent(SecondActivity.this,  DisplayImagesGalleryActivity.class));
             }
         });
 
-        addPhotoFrmGallery.setOnClickListener(new View.OnClickListener() {
+        Clothecabinet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SecondActivity.this, GalleryActivity.class));
+             Intent it=new Intent(SecondActivity.this,VirturalCabinet.class);
+             it.putExtra("ID",firebaseAuth.getCurrentUser().getUid());
+             startActivity(it);
+            }
+        });
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(SecondActivity.this,  GalleryActivity.class));
             }
         });
 

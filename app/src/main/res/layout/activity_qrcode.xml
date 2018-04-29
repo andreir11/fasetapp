@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    tools:context="com.example.andre.fasetapp.QRcode"
+    tools:layout_editor_absoluteY="81dp">
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="149dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="28dp"
+        android:background="#f9fbba"
+        android:onClick="save"
+        android:text="save"
+        android:textColor="#29aba4"
+        android:textSize="24sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_editor_absoluteY="391dp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="39dp"
+        android:layout_marginLeft="16dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="BarCode  Sucecesslly!"
+        android:textAlignment="center"
+        android:textColor="#000"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        app:layout_constraintLeft_toLeftOf="parent"
+        tools:layout_editor_absoluteY="64dp" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="220dp"
+        android:layout_height="35dp"
+        android:text="Whether to save?"
+        android:textColor="#000"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="116dp"
+        tools:layout_editor_absoluteY="129dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="149dp"
+        android:layout_height="50dp"
+        android:layout_marginRight="32dp"
+        android:background="#f9fbba"
+        android:onClick="cancel"
+        android:text="Cancel"
+        android:textColor="#29aba4"
+        android:textSize="24dp"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="391dp" />
+
+</android.support.constraint.ConstraintLayout>

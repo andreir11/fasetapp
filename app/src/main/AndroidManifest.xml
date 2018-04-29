@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.andre.fasetapp">
-
+    <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -40,7 +40,10 @@
         <activity android:name=".DisplayImagesGalleryActivity" />
         <activity android:name=".ImageShowActivity" />
         <activity android:name=".EmptyActivity" />
-        <activity android:name=".CalendarActivity"></activity>
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".VirturalCabinet" />
+        <activity android:name=".QRcode" />
+        <activity android:name=".save"></activity>
     </application>
 
 </manifest>
