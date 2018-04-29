@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">fasetapp</string>
+    <string name="title_activity_password">PasswordActivity</string>
+</resources>

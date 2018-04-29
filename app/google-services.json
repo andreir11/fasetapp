@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "548919688743",
+    "firebase_url": "https://fasetapp-e5b56.firebaseio.com",
+    "project_id": "fasetapp-e5b56",
+    "storage_bucket": "fasetapp-e5b56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548919688743:android:1262e17340235071",
+        "android_client_info": {
+          "package_name": "com.example.andre.fasetapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "548919688743-3o1fk6l36paap53kk2lrrb61n5tq28la.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE42odJ_48c0nLTF-l2QrWiakLV49pDmM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
