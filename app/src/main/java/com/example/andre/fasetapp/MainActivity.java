@@ -145,15 +145,15 @@ public class MainActivity extends AppCompatActivity {
 
 */
 
-        startActivity(new Intent(MainActivity.this, SecondActivity.class));
+        //startActivity(new Intent(MainActivity.this, SecondActivity.class));
 
-//        if(emailflag){
-//            finish();
-//            startActivity(new Intent(MainActivity.this, SecondActivity.class));
-//        }else{
-//            Toast.makeText(this, "Verify your email", Toast.LENGTH_SHORT).show();
-//            firebaseAuth.signOut();
-//        }
+      if(emailflag){
+            finish();
+            startActivity(new Intent(MainActivity.this, SecondActivity.class));
+        }else{
+            Toast.makeText(this, "Verify your email", Toast.LENGTH_SHORT).show();
+           firebaseAuth.signOut();
+        }
     }
 
 }

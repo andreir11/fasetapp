@@ -12,16 +12,44 @@
         android:layout_height="350dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="19dp"
         app:mcv_selectionColor="#00F"
         app:mcv_showOtherDates="all" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/calendarView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp" />
+        android:textSize="24dp" />
+
+    <ImageView
+        android:id="@+id/imageDaily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/calendarView"
+        android:layout_below="@+id/textView4"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <Button
+        android:id="@+id/buttonToSelectCollection"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_alignEnd="@+id/calendarView"
+        android:layout_below="@+id/calendarView"
+        android:text="+"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/buttonToDelete"
+        android:layout_width="50dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/calendarView"
+        android:layout_marginEnd="17dp"
+        android:layout_toStartOf="@+id/buttonToSelectCollection"
+        android:text="Del"
+        android:textSize="10sp" />
 
 </RelativeLayout>

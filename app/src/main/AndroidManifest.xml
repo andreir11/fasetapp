@@ -41,7 +41,8 @@
         <activity android:name=".ImageShowActivity" />
         <activity android:name=".EmptyActivity" />
         <activity android:name=".CalendarActivity" />
-        <activity android:name=".VirturalCabinet" />
+        <activity android:name=".PickFashion1" />
+        <activity android:name=".EmptyActivity1" />
         <activity android:name=".QRcode" />
         <activity android:name=".save"></activity>
     </application>

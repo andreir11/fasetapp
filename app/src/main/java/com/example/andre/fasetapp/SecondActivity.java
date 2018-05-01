@@ -75,7 +75,7 @@ public class SecondActivity extends AppCompatActivity {
         customize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SecondActivity.this, PickFashion.class));
+                startActivity(new Intent(SecondActivity.this, CalendarActivity.class));
             }
         });
 
