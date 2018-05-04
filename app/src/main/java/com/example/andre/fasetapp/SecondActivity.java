@@ -2,6 +2,9 @@ package com.example.andre.fasetapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.internal.BottomNavigationItemView;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +17,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Calendar;
 
 public class SecondActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
@@ -71,6 +76,50 @@ public class SecondActivity extends AppCompatActivity {
         //user.setUserId(userIdString);
         //String idOfUser=user.getUserId();
         textViewUserId.setText(firebaseAuth.getCurrentUser().getUid());
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_arrow:
+
+                        break;
+
+                    case R.id.ic_android:
+                        Intent intent1 = new Intent(SecondActivity.this, CalendarActivity.class);
+                        startActivity(intent1);
+                        break;
+
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(SecondActivity.this, GalleryActivity.class);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.ic_center_focus:
+                        Intent intent3 = new Intent(SecondActivity.this, DisplayImagesDailyActivity.class);
+                        startActivity(intent3);
+                        break;
+
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(SecondActivity.this, ProfileActivity.class);
+                        startActivity(intent4);
+                        break;
+
+
+                }
+
+
+                return false;
+            }
+        });
+
+
 
         customize.setOnClickListener(new View.OnClickListener() {
             @Override

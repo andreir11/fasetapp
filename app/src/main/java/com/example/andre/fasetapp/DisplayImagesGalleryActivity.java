@@ -1,6 +1,7 @@
 package com.example.andre.fasetapp;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -115,7 +116,21 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
 
     @Override
     public void onItemClick(int position) {
+        ImageUploadInfo selectedItem = list.get(position);
+        final String selectedKey = selectedItem.getKey();
 
+        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
+        //textDisplay.setText(selectedItem.getImageURL());
+        /*
+        Glide.with(this)
+                .load(selectedItem.getImageURL())
+                .into(imgChoose2);*/
+
+
+        Intent i = new Intent(DisplayImagesGalleryActivity.this , ShowImageGallery.class);
+        i.putExtra("link", selectedItem.getImageURL());
+        i.putExtra("alias", selectedItem.getImageName());
+        startActivity(i);
         Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
     }
 

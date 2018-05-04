@@ -3,9 +3,12 @@ package com.example.andre.fasetapp;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -79,6 +82,49 @@ public class CalendarActivity extends AppCompatActivity{
         textView.setText(getSelectedDatesString());
 
 */
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_arrow:
+                        Intent intent1 = new Intent(CalendarActivity.this, SecondActivity.class);
+                        startActivity(intent1);
+                        break;
+
+                    case R.id.ic_android:
+
+                        break;
+
+                    case R.id.ic_books:
+                        Intent intent2 = new Intent(CalendarActivity.this, GalleryActivity.class);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.ic_center_focus:
+                        Intent intent3 = new Intent(CalendarActivity.this, DisplayImagesActivity.class);
+                        startActivity(intent3);
+                        break;
+
+                    case R.id.ic_backup:
+                        Intent intent4 = new Intent(CalendarActivity.this, ProfileActivity.class);
+                        startActivity(intent4);
+                        break;
+
+
+                }
+
+
+                return false;
+            }
+        });
+
+
 
         buttonToSelectC.setOnClickListener(new View.OnClickListener() {
             @Override

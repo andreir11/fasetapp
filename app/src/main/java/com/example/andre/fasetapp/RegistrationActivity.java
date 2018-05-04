@@ -28,6 +28,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity{
 
@@ -86,7 +88,7 @@ public class RegistrationActivity extends AppCompatActivity{
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate()){
+                if(validate() && emailValidate()){
                     //Upload data to the database
                     String user_email = userEmail.getText().toString().trim();
                     String user_password = userPassword.getText().toString().trim();
@@ -103,6 +105,11 @@ public class RegistrationActivity extends AppCompatActivity{
                                 //finish();
                                 //startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                             }else{
+                                password = userPassword.getText().toString();
+                                if( password.length() < 5 )
+                                {
+                                    Toast.makeText(RegistrationActivity.this, "The password you enter must be at least 6 characters", Toast.LENGTH_SHORT).show();
+                                }
                                 Toast.makeText(RegistrationActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
                             }
 
@@ -139,15 +146,61 @@ public class RegistrationActivity extends AppCompatActivity{
         email = userEmail.getText().toString();
         age = userAge.getText().toString();
 
+        /*String passwordHandler = password.getText().toString();
+        if (password.isEmpty() || password.length() < 6) {  passwordText.setError("Password cannot be less than 6 characters!");
+        }
+        else {
+            passwordText.setError(null);
+            startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+        }*/
+
+
+
 //isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty() || imagePath != null
         if(name.isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty() || imagePath != null){
             Toast.makeText(this, "Please enter all the details", Toast.LENGTH_SHORT).show();
-        }else{
+
+            if( password.length() < 5 )
+            {
+                //Toast.makeText(this, "The password you enter must be at least 6 characters", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+
+
+        else{
             result = true;
         }
 
         return result;
     }
+
+    private Boolean emailValidate(){
+        Boolean result = false;
+
+        email = userEmail.getText().toString();
+
+        Pattern pattern;
+        Matcher matcher;
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+
+        if(matcher.matches() == false){
+
+            Toast.makeText(this, "Email address invalid", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            Toast.makeText(this, "Email address valid", Toast.LENGTH_SHORT).show();
+            result = true;
+            //matcher.matches(); }
+
+        }
+
+        return result;
+    }
+
 
 
     private void sendEmailVerification(){

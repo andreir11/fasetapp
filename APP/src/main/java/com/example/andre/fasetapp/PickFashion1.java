@@ -263,7 +263,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose1);
-        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as top", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -291,7 +291,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose);
-        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"You are selecting: " + selectedItem.getImageName() + " as bottom", Toast.LENGTH_SHORT).show();
 
 
 
@@ -307,7 +307,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose2);
-        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as Hats", Toast.LENGTH_SHORT).show();
     }
 
     public void onShoes(int position) {
@@ -320,7 +320,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose3);
-        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as Shoes", Toast.LENGTH_SHORT).show();
     }
 
     public void onAccesories(int position) {
@@ -333,7 +333,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose4);
-        Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as Accesories", Toast.LENGTH_SHORT).show();
     }
 
 

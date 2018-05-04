@@ -92,6 +92,18 @@ public class GalleryActivity extends AppCompatActivity {
 
         }
 
+        SelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+
+                // Setting intent type as image to select image from phone storage.
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
+            }
+        });
+
 
         // Adding click listener to Choose image button.
         ChooseButton.setOnClickListener(new View.OnClickListener() {
@@ -201,6 +213,9 @@ public class GalleryActivity extends AppCompatActivity {
 
                             // Hiding the progressDialog after done uploading.
                             progressDialog.dismiss();
+
+                            //price
+
 
                             // Showing toast message after done uploading.
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
