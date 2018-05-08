@@ -1,18 +1,17 @@
 package com.example.andre.fasetapp;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
@@ -22,103 +21,75 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
+import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-public class GalleryActivity extends AppCompatActivity {
+public class UpdateProfileFashionDetail extends AppCompatActivity {
 
-    // Folder path for Firebase Storage.
-    String Storage_Path = "All_Image_Uploads/";
+    private EditText newName, newPrice, newTag, newCategory, newBrand, newSeason, newSize ;
+    private TextView newDate;
+    private Button save;
+    private FirebaseAuth firebaseAuth;
+    private String imgId, imgLink, imgDate;
+    private String sameDate, sameLink, sameId;
+    private FirebaseDatabase firebaseDatabase;
+    private ImageView imgUploadNew;
+    private int Image_Request_Code = 7;
+    private Uri FilePathUri;
 
-    // Root Database Name for Firebase Database.
-    public static final String Database_Path = "All_Image_Uploads_Database";
+    private Button btnChoose;
 
-    // Creating button.
-    Button ChooseButton, UploadButton, DisplayImageButton;
-
-    // Creating EditText.
-    EditText ImageName, ImageCategory, ImageTag, ImagePrice, ImageSeason, ImageBrand, ImageSize ;
-
-    String itemCategory;
-    // Creating ImageView.
-    ImageView SelectImage;
-
-    // Creating URI.
-    Uri FilePathUri;
-
-    // Creating StorageReference and DatabaseReference object.
-    StorageReference storageReference;
-    DatabaseReference databaseReference;
-    FirebaseAuth firebaseAuth;
-    TextView textview;
-    // Image request code for onActivityResult() .
-    int Image_Request_Code = 7;
-
-    ProgressDialog progressDialog ;
-
-    String formattedDate;
-    String tagHolder, seasonHolder;
+    private String tagHolder, seasonHolder;
+    private String itemCategory;
+    private TextView textview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gallery);
+        setContentView(R.layout.activity_update_profile_fashion_detail);
 
-        // Assign FirebaseStorage instance to storageReference.
-        storageReference = FirebaseStorage.getInstance().getReference();
-        firebaseAuth = FirebaseAuth.getInstance();
-        // Assign FirebaseDatabase instance with root database name.
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        newName = (EditText) findViewById(R.id.ImageNameEditTextUpdate);
+        newCategory = (EditText)findViewById(R.id.ImageCategoryEditTextUpdate);
+        newBrand =(EditText) findViewById(R.id.ImageBrandEditTextUpdate);
+        newPrice = (EditText)findViewById(R.id.ImagePriceEditTextUpdate);
+        newSeason = (EditText)findViewById(R.id.ImageSeasonEditTextUpdate);
+        newTag = (EditText)findViewById(R.id.ImageTagEditTextUpdate);
+        newSize = (EditText) findViewById(R.id.ImageSizeEditTextUpdate);
+        //newDate = findViewById(R.id.dateOfInsert);
+
         textview =  (TextView)findViewById(R.id.textView1);
-        //Assign ID'S to button.
-        ChooseButton = (Button)findViewById(R.id.ButtonChooseImage);
-        UploadButton = (Button)findViewById(R.id.ButtonUploadImage);
+        btnChoose = (Button)findViewById(R.id.ButtonChooseImage);
+        save = (Button)findViewById(R.id.ButtonUploadImageUpdate);
+        imgUploadNew = (ImageView)findViewById(R.id.ShowImage) ;
 
-        //DisplayImageButton = (Button)findViewById(R.id.DisplayImagesButton);
 
-        // Assign ID's to EditText.
-        ImageName = (EditText)findViewById(R.id.ImageNameEditText);
-        ImageCategory = (EditText)findViewById(R.id.ImageCategoryEditText);
-        ImagePrice = (EditText)findViewById(R.id.ImagePriceEditText);
-        ImageSeason = (EditText)findViewById(R.id.ImageSeasonEditText);
-        ImageTag = (EditText)findViewById(R.id.ImageTagEditText);
-        ImageBrand = (EditText)findViewById(R.id.ImageBrandEditText);
-        ImageSize = (EditText)findViewById(R.id.ImageSizeEditText);
-        // Assign ID'S to image view.
-        SelectImage = (ImageView)findViewById(R.id.ShowImageUpload);
-
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
-        SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy");
-        formattedDate = df.format(c);
+        Intent intent = getIntent();
+        imgId = intent.getStringExtra("imageId");
+        imgLink = intent.getStringExtra("imageUrl");
+        imgDate = intent.getStringExtra("date");
 
 
 
-        // Assigning Id to ProgressDialog.
-        progressDialog = new ProgressDialog(GalleryActivity.this);
+        Glide.with(this)
+                .load(imgLink)
+                .into(imgUploadNew);
 
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        newName.setOnEditorActionListener(new DoneOnEditorActionListener());
 
-
-
-        ImageName.setOnEditorActionListener(new DoneOnEditorActionListener());
-
-        SelectImage.setOnClickListener(new View.OnClickListener() {
+        imgUploadNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -130,17 +101,19 @@ public class GalleryActivity extends AppCompatActivity {
             }
         });
 
-        ImagePrice.setOnClickListener(new View.OnClickListener() {
+
+
+        newPrice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImagePrice.setOnEditorActionListener(new DoneOnEditorActionListener());
+                newPrice.setOnEditorActionListener(new DoneOnEditorActionListener());
 
             }
         });
 
         //bring in tag dialog
-        ImageTag.setFocusable(false);
-        ImageTag.setOnClickListener(new View.OnClickListener() {
+        newTag.setFocusable(false);
+        newTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String[] tags = new String[]{
@@ -163,17 +136,17 @@ public class GalleryActivity extends AppCompatActivity {
                 final List<String> tagsList = Arrays.asList(tags);
 
                 //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
-                AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfileFashionDetail.this);
 
                 builder.setIcon(R.drawable.icon);
                 // Set a title for alert dialog
                 builder.setTitle("Tags");
                 //set the keyboard to hide
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                im.hideSoftInputFromWindow(ImageName.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImagePrice.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImageBrand.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImageSize.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newName.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newPrice.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newBrand.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newSize.getWindowToken(), 0);
 
 
                 builder.setMultiChoiceItems(tags, checkedTags, new DialogInterface.OnMultiChoiceClickListener() {
@@ -207,33 +180,33 @@ public class GalleryActivity extends AppCompatActivity {
 
 
 
-                        ImageTag.setText("");
+                        newTag.setText("");
                         StringBuilder commaSepValueBuilder = new StringBuilder();
                         for (int i = 0; i<checkedTags.length; i++){
                             boolean checked = checkedTags[i];
                             if (checked) {
 
 
-                                    commaSepValueBuilder.append(tagsList.get(i));
+                                commaSepValueBuilder.append(tagsList.get(i));
 
-                                    //if the value is not the last element of the list
-                                    //then append the comma(,) as well
-                                    if ( i != tagsList.size()){
-                                        commaSepValueBuilder.append(", ");
+                                //if the value is not the last element of the list
+                                //then append the comma(,) as well
+                                if ( i != tagsList.size()){
+                                    commaSepValueBuilder.append(", ");
 
-                                    }
+                                }
 
 
                                 //ImageTag.setText(ImageTag.getText() + colorsList.get(i) + ", ");
                             }
                             else
                             {
-                                ImageTag.setText("");
+                                newTag.setText("");
                             }
 
                         }
                         commaSepValueBuilder.deleteCharAt(commaSepValueBuilder.length()-2);
-                        ImageTag.setText(ImageTag.getText() + commaSepValueBuilder.toString());
+                        newTag.setText(newTag.getText() + commaSepValueBuilder.toString());
                         tagHolder = commaSepValueBuilder.toString();
 
 
@@ -311,8 +284,8 @@ public class GalleryActivity extends AppCompatActivity {
 
         });
 
-        ImageSeason.setFocusable(false);
-        ImageSeason.setOnClickListener(new View.OnClickListener() {
+        newSeason.setFocusable(false);
+        newSeason.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String[] seasons = new String[]{
@@ -334,17 +307,17 @@ public class GalleryActivity extends AppCompatActivity {
                 final List<String> seasonsList = Arrays.asList(seasons);
 
                 //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
-                AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfileFashionDetail.this);
 
                 builder.setIcon(R.drawable.icon);
                 // Set a title for alert dialog
                 builder.setTitle("Seasons");
 
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                im.hideSoftInputFromWindow(ImageName.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImagePrice.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImageBrand.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImageSize.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newName.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newPrice.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newBrand.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newSize.getWindowToken(), 0);
 
                 builder.setMultiChoiceItems(seasons, checkedSeasons, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -374,7 +347,7 @@ public class GalleryActivity extends AppCompatActivity {
                         // Do something when click positive button
                         //ImageTag.setText("Your preferred colors..... \n");
 
-                        ImageSeason.setText("");
+                        newSeason.setText("");
                         StringBuilder commaSepValueBuilder = new StringBuilder();
                         for (int i = 0; i<checkedSeasons.length; i++){
                             boolean checked = checkedSeasons[i];
@@ -394,7 +367,7 @@ public class GalleryActivity extends AppCompatActivity {
 
                         }
                         commaSepValueBuilder.deleteCharAt(commaSepValueBuilder.length()-2);
-                        ImageSeason.setText(ImageSeason.getText() + commaSepValueBuilder.toString());
+                        newSeason.setText(newSeason.getText() + commaSepValueBuilder.toString());
 
                         seasonHolder = commaSepValueBuilder.toString();
 
@@ -426,8 +399,10 @@ public class GalleryActivity extends AppCompatActivity {
 
         });
 
-        ImageCategory.setFocusable(false);
-        ImageCategory.setOnClickListener(new View.OnClickListener() {
+
+
+        newCategory.setFocusable(false);
+        newCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final String[] category = new String[]{
@@ -443,17 +418,17 @@ public class GalleryActivity extends AppCompatActivity {
                 final List<String> categoryList = Arrays.asList(category);
 
                 //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
-                AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfileFashionDetail.this);
 
                 builder.setIcon(R.drawable.icon);
                 // Set a title for alert dialog
                 builder.setTitle("Category");
 
                 InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-                im.hideSoftInputFromWindow(ImageName.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImagePrice.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImageBrand.getWindowToken(), 0);
-                im.hideSoftInputFromWindow(ImageSize.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newName.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newPrice.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newBrand.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newSize.getWindowToken(), 0);
 
                 builder.setSingleChoiceItems(category, -1, new DialogInterface.OnClickListener() {
                     @Override
@@ -461,7 +436,7 @@ public class GalleryActivity extends AppCompatActivity {
                         //ImageTag.setText("Sort By : " +listitems[i]);
                         dialogInterface.dismiss();
                         itemCategory = category[i].toString();
-                        ImageCategory.setText(itemCategory);
+                        newCategory.setText(itemCategory);
 
 
                     }
@@ -493,57 +468,103 @@ public class GalleryActivity extends AppCompatActivity {
 
         });
 
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseDatabase = FirebaseDatabase.getInstance();
 
+        //final DatabaseReference databaseReference = firebaseDatabase.getReference(firebaseAuth.getUid());
+        final DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getUid()).child("userGallery").child(imgId);
 
-
-
-
-        // Adding click listener to Choose image button.
-        ChooseButton.setOnClickListener(new View.OnClickListener() {
+        databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ImageUploadAttributes updateAttr = dataSnapshot.getValue(ImageUploadAttributes.class);
+                newName.setText(updateAttr.getname());
+                newPrice.setText(updateAttr.getprice());
+                newTag.setText(updateAttr.gettag());
 
-                // Creating intent.
-                Intent intent = new Intent();
+                newCategory.setText(updateAttr.getcategory());
+                newSeason.setText(updateAttr.getseason());
+                newBrand.setText(updateAttr.getbrand());
+                newSize.setText(updateAttr.getsize());
+                sameDate = updateAttr.getdate().toString();
+                sameLink = updateAttr.getImageURL().toString();
+                sameId = updateAttr.getid().toString();
+            }
 
-                // Setting intent type as image to select image from phone storage.
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_GET_CONTENT);
-                startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
-
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(UpdateProfileFashionDetail.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
 
-
-        // Adding click listener to Upload image button.
-        UploadButton.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String nameUpdate = newName.getText().toString();
+                String priceUpdate = newPrice.getText().toString();
+                String tagUpdate = newTag.getText().toString();
+
+
+                String sizeUpdate = newSize.getText().toString();
+                String brandUpdate = newBrand.getText().toString();
+                String categoryUpdate = newCategory.getText().toString();
+                String seasonUpdate = newSeason.getText().toString();
 
                 validate();
-                // Calling method to upload selected image on Firebase storage.
-                UploadImageFileToFirebaseStorage();
 
+                ImageUploadAttributes userProfile = new ImageUploadAttributes(sameId, nameUpdate, sameLink, sameDate, tagUpdate, priceUpdate,brandUpdate,seasonUpdate,categoryUpdate,sizeUpdate);
 
+                databaseReference.setValue(userProfile);
 
-
+                finish();
             }
         });
 
 
+    }
 
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            FilePathUri = data.getData();
+
+
+            try {
+
+                // Getting selected image into Bitmap.
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
+
+                // Setting up bitmap selected image into ImageView.
+                imgUploadNew.setImageBitmap(bitmap);
+
+                // After selecting image change choose button above text.
+                //ChooseButton.setText((CharSequence) FilePathUri.toString());
+                //ChooseButton.setText("Change Image");
+
+            }
+            catch (IOException e) {
+
+                e.printStackTrace();
+            }
+        }
     }
 
     private Boolean validate(){
         Boolean result = false;
 
-        String CheckName = ImageName.getText().toString();
-        String CheckPrice = ImagePrice.getText().toString();
-        String CheckTag = ImageTag.getText().toString();
-        String CheckSeason = ImageSeason.getText().toString();
-        String CheckCategory = ImageCategory.getText().toString();
-        String CheckSize = ImageSize.getText().toString();
-        String CheckBrand = ImageBrand.getText().toString();
+        String CheckName = newName.getText().toString();
+        String CheckPrice = newPrice.getText().toString();
+        String CheckTag = newTag.getText().toString();
+        String CheckSeason = newSeason.getText().toString();
+        String CheckCategory = newCategory.getText().toString();
+        String CheckSize = newSize.getText().toString();
+        String CheckBrand = newBrand.getText().toString();
 
 
         /*String passwordHandler = password.getText().toString();
@@ -554,25 +575,25 @@ public class GalleryActivity extends AppCompatActivity {
             startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
         }*/
         if(TextUtils.isEmpty(CheckName)){
-            ImageName.setError("The item cannot be empty");
+            newName.setError("The item cannot be empty");
         }
         if(TextUtils.isEmpty(CheckPrice)){
-            ImagePrice.setError("The item cannot be empty");
+            newPrice.setError("The item cannot be empty");
         }
         if(TextUtils.isEmpty(CheckSize)) {
-            ImageSize.setError("The item cannot be empty");
+            newSize.setError("The item cannot be empty");
         }
         if(TextUtils.isEmpty(CheckBrand)){
-            ImageBrand.setError("The item cannot be empty");
+            newBrand.setError("The item cannot be empty");
         }
         else if(TextUtils.isEmpty(CheckTag)){
-            ImageTag.setError("The item cannot be empty");
+            newTag.setError("The item cannot be empty");
         }
         else if(TextUtils.isEmpty(CheckSeason)){
-            ImageSeason.setError("The item cannot be empty");
+            newSeason.setError("The item cannot be empty");
         }
         else if(TextUtils.isEmpty(CheckCategory)){
-            ImageCategory.setError("The item cannot be empty");
+            newCategory.setError("The item cannot be empty");
         }
 
 
@@ -593,38 +614,6 @@ public class GalleryActivity extends AppCompatActivity {
 
 
 
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == Image_Request_Code && resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-            FilePathUri = data.getData();
-
-
-            try {
-
-                // Getting selected image into Bitmap.
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), FilePathUri);
-
-                // Setting up bitmap selected image into ImageView.
-                SelectImage.setImageBitmap(bitmap);
-
-                // After selecting image change choose button above text.
-                //ChooseButton.setText((CharSequence) FilePathUri.toString());
-                ChooseButton.setText("Change Image");
-
-            }
-            catch (IOException e) {
-
-                e.printStackTrace();
-            }
-        }
-    }
-
     // Creating Method to get the selected image file Extension from File Path URI.
     public String GetFileExtension(Uri uri) {
 
@@ -636,88 +625,14 @@ public class GalleryActivity extends AppCompatActivity {
         return mimeTypeMap.getExtensionFromMimeType(contentResolver.getType(uri)) ;
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
 
-    // Creating UploadImageFileToFirebaseStorage method to upload image on storage.
-    public void UploadImageFileToFirebaseStorage() {
-
-        // Checking whether FilePathUri Is empty or not.
-        if (FilePathUri != null) {
-
-            // Setting progressDialog Title.
-            progressDialog.setTitle("Image is Uploading...");
-
-            // Showing progressDialog.
-            progressDialog.show();
-
-            // Creating second StorageReference.
-            StorageReference storageReference2nd = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
-
-            // Adding addOnSuccessListener to second StorageReference.
-            storageReference2nd.putFile(FilePathUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Getting image name from EditText and store into string variable.
-                            String TempImageName = ImageName.getText().toString().trim();
-                            String TempImageBrand = ImageBrand.getText().toString().trim();
-                            String TempImagePrice = ImagePrice.getText().toString().trim();
-                            String TempImageSize = ImageSize.getText().toString().trim();
-                            // Hiding the progressDialog after done uploading.
-                            progressDialog.dismiss();
-
-                            //price
-
-                            // Getting image upload ID.
-                            String ImageUploadId = databaseReference.push().getKey();
-                            // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
-
-                            @SuppressWarnings("VisibleForTests")
-                            ImageUploadAttributes imageUploadInfo = new ImageUploadAttributes(ImageUploadId.toString(),TempImageName, taskSnapshot.getDownloadUrl().toString(),
-                                    formattedDate,tagHolder,TempImagePrice,TempImageBrand,seasonHolder,itemCategory, TempImageSize);
-
-
-
-                            // Adding image upload id s child element into databaseReference.
-                            databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").child(ImageUploadId).setValue(imageUploadInfo);
-                            Intent i = new Intent(GalleryActivity.this, SecondActivity.class);
-
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            startActivity(i);
-
-                        }
-                    })
-                    // If something goes wrong .
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-
-                            // Hiding the progressDialog.
-                            progressDialog.dismiss();
-
-                            // Showing exception erro message.
-                            Toast.makeText(GalleryActivity.this, exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-
-                    // On progress change upload time.
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-
-                            // Setting progressDialog Title.
-                            progressDialog.setTitle("Image is Uploading...");
-
-                        }
-                    });
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
         }
-        else {
-
-            Toast.makeText(GalleryActivity.this, "Please Check If You Have Selected Image or Fields", Toast.LENGTH_LONG).show();
-
-        }
+        return super.onOptionsItemSelected(item);
     }
-
 
 }

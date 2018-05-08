@@ -82,7 +82,7 @@ public class CalendarActivity extends AppCompatActivity{
         textView.setText(getSelectedDatesString());
 
 */
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
+      /*  BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
@@ -124,7 +124,7 @@ public class CalendarActivity extends AppCompatActivity{
             }
         });
 
-
+*/
 
         buttonToSelectC.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,7 +173,7 @@ public class CalendarActivity extends AppCompatActivity{
         public void onDateSelected(@NonNull MaterialCalendarView widget, CalendarDay date, boolean selected) {
 
             buttonToSelectC.setVisibility(View.VISIBLE);
-            buttonToSelectD.setVisibility(View.VISIBLE);
+            //buttonToSelectD.setVisibility(View.VISIBLE);
 
             aa = FORMATTER.format(date.getDate());
             String ab = aa.toString();

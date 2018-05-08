@@ -7,20 +7,31 @@
     android:layout_margin="20dp"
     tools:context="com.example.andre.fasetapp.GalleryActivity">
 
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
     <TextView
-        android:id="@+id/textview"
+        android:id="@+id/textview1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:gravity="fill_horizontal|center|fill"
+        android:text="Choose Image To Upload"
         android:layout_marginTop="20dp"
-        android:gravity="center"
         android:textSize="20dp"
         android:textStyle="bold" />
 
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="150dp"
-        android:id="@+id/ShowImageView"
-        android:layout_below="@+id/textview"
+        android:id="@+id/ShowImageUpload"
+        android:layout_below="@+id/textview1"
         android:layout_marginTop="20dp"/>
 
     <Button
@@ -28,34 +39,158 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/ShowImageView"
+        android:layout_below="@+id/ShowImage"
         android:layout_marginTop="20dp"
+        android:selectAllOnFocus="false"
         android:text="Choose Image" />
 
-    <EditText
-        android:layout_width="fill_parent"
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/ImageNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+            android:hint="Name"
+            android:imeOptions="actionDone"
+            android:selectAllOnFocus="false"
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"/>
+
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/ImageCategoryEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+            android:hint="Category"
+            android:selectAllOnFocus="true"
+            android:singleLine="true" />
+
+    </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/ImageBrandEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+            android:hint="Brand"
+            android:imeOptions="actionDone"
+            android:selectAllOnFocus="false"
+            android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/ImagePriceEditText"
+            android:inputType="number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+            android:hint="Price"
+            android:imeOptions="actionDone"
+            android:selectAllOnFocus="false"
+            android:singleLine="false" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/ImageSeasonEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+            android:hint="Season"
+            android:selectAllOnFocus="false"
+            android:singleLine="false" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+        android:id="@+id/ImageTagEditText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/ImageNameEditText"
-        android:layout_below="@+id/ButtonChooseImage"
         android:layout_marginTop="20dp"
-        android:hint="Enter Image Name Here"
-        android:gravity="center"/>
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+        android:hint="Tag"
+        android:selectAllOnFocus="false"
+        android:singleLine="false" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_height = "wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent">
+        <EditText
+            android:id="@+id/ImageSizeEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:imeOptions="actionDone"
+            android:drawableLeft="@drawable/icon"
+            android:drawablePadding="2dp"
+            android:gravity="center_horizontal|center|start"
+            android:hint="Size"
+            android:selectAllOnFocus="false"
+            android:singleLine="true" />
+        </android.support.design.widget.TextInputLayout>
 
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ButtonUploadImage"
-        android:layout_below="@+id/ImageNameEditText"
+        android:layout_below="@+id/ImageNameEditTextUpdate"
+        android:selectAllOnFocus="false"
         android:layout_marginTop="20dp"
-        android:text="Upload image to Firebase Storage"/>
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:id="@+id/DisplayImagesButton"
-        android:layout_below="@+id/ButtonUploadImage"
-        android:text="Show All Uploaded Images"/>
+        android:text="Upload image"/>
 
 
+
+    </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

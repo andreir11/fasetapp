@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,7 +89,7 @@ public class RegistrationActivity extends AppCompatActivity{
         regButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(validate() && emailValidate()){
+                if(validate()){
                     //Upload data to the database
                     String user_email = userEmail.getText().toString().trim();
                     String user_password = userPassword.getText().toString().trim();
@@ -105,12 +106,12 @@ public class RegistrationActivity extends AppCompatActivity{
                                 //finish();
                                 //startActivity(new Intent(RegistrationActivity.this, MainActivity.class));
                             }else{
-                                password = userPassword.getText().toString();
+                                /*password = userPassword.getText().toString();
                                 if( password.length() < 5 )
                                 {
                                     Toast.makeText(RegistrationActivity.this, "The password you enter must be at least 6 characters", Toast.LENGTH_SHORT).show();
-                                }
-                                Toast.makeText(RegistrationActivity.this, "Registration Failed", Toast.LENGTH_SHORT).show();
+                                }*/
+                                Toast.makeText(RegistrationActivity.this, "Registration Failed, Check All The Fields Again", Toast.LENGTH_SHORT).show();
                             }
 
                         }
@@ -136,6 +137,12 @@ public class RegistrationActivity extends AppCompatActivity{
         userLogin = (TextView)findViewById(R.id.tvUserLogin);
         userAge = (EditText)findViewById(R.id.etAge);
         userProfilePic = (ImageView)findViewById(R.id.ivProfile);
+
+        userName.setOnEditorActionListener(new DoneOnEditorActionListener());
+        userPassword.setOnEditorActionListener(new DoneOnEditorActionListener());
+        userEmail.setOnEditorActionListener(new DoneOnEditorActionListener());
+        userAge.setOnEditorActionListener(new DoneOnEditorActionListener());
+
     }
 
     private Boolean validate(){
@@ -153,6 +160,43 @@ public class RegistrationActivity extends AppCompatActivity{
             passwordText.setError(null);
             startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
         }*/
+        if(TextUtils.isEmpty(name)){
+            userName.setError("The item cannot be empty");
+        }
+        if(TextUtils.isEmpty(password)){
+            userPassword.setError("Password field cannot be empty");
+        }
+        emailValidate();
+
+        if(password.length() < 5 ){ userPassword.setError("Password must be at least 6 characters");}
+
+        if(TextUtils.isEmpty(email)){
+            userEmail.setError("E-mail field cannot be empty");
+        }
+
+       /*
+        Pattern pattern;
+        Matcher matcher;
+        String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+
+        if(matcher.matches() == false){
+            userEmail.setError("Please Input Your E-mail Address Correctly");
+            //Toast.makeText(this, "Email address invalid", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            //Toast.makeText(this, "Email address valid", Toast.LENGTH_SHORT).show();
+            //result = true;
+            //matcher.matches(); }
+
+        }*/
+
+
+
+        if(TextUtils.isEmpty(age)){
+            userAge.setError("Age field cannot be empty");
+        }
 
 
 
@@ -188,11 +232,11 @@ public class RegistrationActivity extends AppCompatActivity{
         matcher = pattern.matcher(email);
 
         if(matcher.matches() == false){
-
-            Toast.makeText(this, "Email address invalid", Toast.LENGTH_SHORT).show();
+            userEmail.setError("Please Input Your E-mail Address Correctly");
+            //Toast.makeText(this, "Email address invalid", Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(this, "Email address valid", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Email address valid", Toast.LENGTH_SHORT).show();
             result = true;
             //matcher.matches(); }
 
@@ -211,7 +255,8 @@ public class RegistrationActivity extends AppCompatActivity{
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
                         sendUserData();
-                        Toast.makeText(RegistrationActivity.this, "Successfully Registered, Verification mail sent!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrationActivity.this, "Successfully Registered!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegistrationActivity.this, "Verification mail sent! Check Your Email Address For Verification", Toast.LENGTH_LONG).show();
                         firebaseAuth.signOut();
                         finish();
                         startActivity(new Intent(RegistrationActivity.this, MainActivity.class));

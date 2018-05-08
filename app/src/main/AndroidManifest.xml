@@ -36,7 +36,7 @@
         <activity android:name=".ImagesActivity" />
         <activity android:name=".PickFashion" />
         <activity android:name=".FashionCollection" />
-        <activity android:name=".GalleryActivity" />
+        <activity android:windowSoftInputMode="stateAlwaysHidden" android:name=".GalleryActivity" />
         <activity android:name=".DisplayImagesActivity" />
         <activity android:name=".DisplayImagesGalleryActivity" />
         <activity android:name=".ImageShowActivity" />
@@ -46,6 +46,7 @@
         <activity android:name=".PickFashion1" />
         <activity android:name=".EmptyActivity1" />
         <activity android:name=".VirturalCabinet" />
+        <activity android:name=".UpdateProfileFashionDetail" />
         <activity android:name=".QRcode" />
         <activity android:name=".save" />
         <activity android:name=".ShowImageGallery"></activity>

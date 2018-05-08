@@ -25,7 +25,7 @@ public class SecondActivity extends AppCompatActivity {
     private TextView textViewUserId;
     private Button Clothecabinet;
     private Button customize;
-    private Button gallery;
+    private Button gallery, calendar;
     private Button add;
     private String userIdString;
     private DatabaseReference mFirebaseDatabase;
@@ -53,6 +53,9 @@ public class SecondActivity extends AppCompatActivity {
         gallery = (Button)findViewById(R.id.btnGallery);
         imgchoose = (ImageView)findViewById(R.id.imageView3);
         add=(Button)findViewById(R.id.button7);
+        calendar=(Button)findViewById(R.id.button8);
+
+
         FirebaseUser userLogin = FirebaseAuth.getInstance().getCurrentUser();
 
         mFirebaseInstance = FirebaseDatabase.getInstance();
@@ -75,50 +78,15 @@ public class SecondActivity extends AppCompatActivity {
         String name = userProfile.getUserName();
         //user.setUserId(userIdString);
         //String idOfUser=user.getUserId();
-        textViewUserId.setText(firebaseAuth.getCurrentUser().getUid());
+        //textViewUserId.setText(firebaseAuth.getCurrentUser().getUid());
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
-        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
-        Menu menu = bottomNavigationView.getMenu();
-        MenuItem menuItem = menu.getItem(0);
-        menuItem.setChecked(true);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        calendar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.ic_arrow:
-
-                        break;
-
-                    case R.id.ic_android:
-                        Intent intent1 = new Intent(SecondActivity.this, CalendarActivity.class);
-                        startActivity(intent1);
-                        break;
-
-                    case R.id.ic_books:
-                        Intent intent2 = new Intent(SecondActivity.this, GalleryActivity.class);
-                        startActivity(intent2);
-                        break;
-
-                    case R.id.ic_center_focus:
-                        Intent intent3 = new Intent(SecondActivity.this, DisplayImagesDailyActivity.class);
-                        startActivity(intent3);
-                        break;
-
-                    case R.id.ic_backup:
-                        Intent intent4 = new Intent(SecondActivity.this, ProfileActivity.class);
-                        startActivity(intent4);
-                        break;
-
-
-                }
-
-
-                return false;
+            public void onClick(View view) {
+                startActivity(new Intent(SecondActivity.this, CalendarActivity.class));
             }
         });
-
 
 
         customize.setOnClickListener(new View.OnClickListener() {
@@ -146,7 +114,7 @@ public class SecondActivity extends AppCompatActivity {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SecondActivity.this,  GalleryActivity.class));
+                startActivity(new Intent(SecondActivity.this, GalleryActivity.class));
             }
         });
 
@@ -177,7 +145,10 @@ public class SecondActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.logoutMenu:{
-                Logout();
+                //Logout();
+                firebaseAuth.signOut();
+                finish();
+                startActivity(new Intent(SecondActivity.this, MainActivity.class));
             }
             case R.id.profileMenu:
                 startActivity(new Intent(SecondActivity.this, ProfileActivity.class));
