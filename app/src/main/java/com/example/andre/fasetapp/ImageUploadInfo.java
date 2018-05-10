@@ -8,7 +8,8 @@ import com.google.firebase.database.Exclude;
 public class ImageUploadInfo {
 
     public String imageName;
-
+    public String id;
+    public String date;
     public String imageURL;
     private String mKey;
 
@@ -17,10 +18,18 @@ public class ImageUploadInfo {
 
     }
 
-    public ImageUploadInfo(String name, String url) {
-
+    public ImageUploadInfo(String id, String name, String url, String date) {
+        this.id = id;
         this.imageName = name;
         this.imageURL= url;
+        this.date=date;
+    }
+    public String getDate() {
+        return date;
+    }
+
+    public String getid() {
+        return id;
     }
 
     public String getImageName() {

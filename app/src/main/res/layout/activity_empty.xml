@@ -44,7 +44,8 @@
         android:singleLine="true"
         android:imeOptions="actionDone"
         app:layout_constraintTop_toBottomOf="@+id/imageView81"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/buttonCl"

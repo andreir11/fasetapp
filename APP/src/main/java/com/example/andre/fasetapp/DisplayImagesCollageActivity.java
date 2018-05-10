@@ -196,6 +196,10 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
 
 
         Intent i = new Intent(DisplayImagesCollageActivity.this , ShowImageGalleryOfCollage.class);
+
+        i.putExtra("imgId", selectedItem.getid());
+        i.putExtra("link", selectedItem.getImageURL());
+        i.putExtra("date", selectedItem.getDate());
        /* i.putExtra("imgId", selectedItem.getid());
         i.putExtra("link", selectedItem.getImageURL());
         i.putExtra("alias", selectedItem.getname());
@@ -216,7 +220,10 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
-        Intent i = new Intent(DisplayImagesCollageActivity.this , ShowImageGallery.class);
+        Intent i = new Intent(DisplayImagesCollageActivity.this , ShowImageGalleryOfCollage.class);
+        i.putExtra("imgName",selectedItem.getImageName());
+        i.putExtra("link",selectedItem.getImageURL());
+        i.putExtra("imgId",selectedItem.getid());
         /*i.putExtra("imgId", selectedItem.getid());
         i.putExtra("link", selectedItem.getImageURL());
         i.putExtra("alias", selectedItem.getname());

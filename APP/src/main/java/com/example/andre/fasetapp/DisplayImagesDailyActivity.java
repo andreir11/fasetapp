@@ -386,6 +386,18 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
                 .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/4j4AfAqmPcPzVwOshvHwouhLvVw1%2FAll_Image_Uploads%2Fsample_5.jpg?alt=media&token=3b9dc544-53d1-47fb-b995-497693e644b0")
                 .into(img1);*/
 
+        ImageUploadInfo selectedItem = list.get(position);
+        final String selectedKey = selectedItem.getKey();
+
+        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
+        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                databaseReference.child(selectedKey).removeValue();
+                Toast.makeText(DisplayImagesDailyActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
 

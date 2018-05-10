@@ -28,7 +28,7 @@ public class ShowImageGalleryOfCollage extends AppCompatActivity {
     String clothTag;
     String clothPrice;
     String dateInsert;
-    String imgId;
+    String imgId, imgName;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
 
@@ -44,23 +44,25 @@ public class ShowImageGalleryOfCollage extends AppCompatActivity {
         editAttr = (Button)findViewById(R.id.buttonEditAttr);
 
         imageTextName = findViewById(R.id.imgName);
-        imageTextCategory = findViewById(R.id.imgCategory);
+        /*imageTextCategory = findViewById(R.id.imgCategory);
         imageTextBrand = findViewById(R.id.imgBrand);
         imageTextPrice = findViewById(R.id.imgPrice);
         imageTextSeason = findViewById(R.id.imgSeason);
         imageTextTag = findViewById(R.id.imgTag);
-        imageTextSize = findViewById(R.id.imgSize);
+        imageTextSize = findViewById(R.id.imgSize); imageTextSleeve = findViewById(R.id.imgSleeves);
+*/
         imageTextDate = findViewById(R.id.imgDate);
-        imageTextSleeve = findViewById(R.id.imgSleeves);
 
         Intent intent = getIntent();
 
         imgId = intent.getStringExtra("imgId");
+        dateInsert = intent.getStringExtra("date");
         imgLink = intent.getStringExtra("link");
+        /*imgLink = intent.getStringExtra("link");
         imgAlias = intent.getStringExtra("alias");
         clothTag = intent.getStringExtra("tag");
         clothPrice = intent.getStringExtra("price");
-        dateInsert = intent.getStringExtra("date");
+        dateInsert = intent.getStringExtra("date");*/
 
 
         Glide.with(this)
@@ -73,8 +75,9 @@ public class ShowImageGalleryOfCollage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(ShowImageGalleryOfCollage.this, UpdateProfileFashionDetail.class);
+                Intent i = new Intent(ShowImageGalleryOfCollage.this, UpdateCollageDetail.class);
                 i.putExtra("imageId", imgId);
+                i.putExtra("imageName", imgName);
                 i.putExtra("imageUrl", imgLink);
                 startActivity(i);
             }
@@ -85,21 +88,23 @@ public class ShowImageGalleryOfCollage extends AppCompatActivity {
         firebaseDatabase = FirebaseDatabase.getInstance();
 
         //DatabaseReference myRef = firebaseDatabase.getReference("users");
-        DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getUid()).child("userGallery").child(imgId);
+        DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getUid()).child("userCollage").child(imgId);
 
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ImageUploadAttributes userProfile = dataSnapshot.getValue(ImageUploadAttributes.class);
-                imageTextName.setText(userProfile.getname());
-                imageTextCategory.setText(userProfile.getcategory());
+                ImageUploadInfo userProfile = dataSnapshot.getValue(ImageUploadInfo.class);
+                imageTextName.setText(userProfile.getImageName());
+                imageTextDate.setText(userProfile.getDate());
+                /*imageTextCategory.setText(userProfile.getcategory());
                 imageTextBrand.setText(userProfile.getbrand());
                 imageTextPrice.setText(userProfile.getprice());
                 imageTextSeason.setText(userProfile.getseason());
                 imageTextTag.setText(userProfile.gettag());
                 imageTextSize.setText(userProfile.getsize());
                 imageTextDate.setText(userProfile.getdate());
-                imageTextSleeve.setText(userProfile.getsleeve());
+                imageTextSleeve.setText(userProfile.getsleeve());*/
+                imgName = userProfile.getImageName();
             }
 
             @Override

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.andre.fasetapp.ShowImageGallery">
+    tools:context="com.example.andre.fasetapp.ShowImageGalleryOfCollage">
 
     <ImageView
         android:id="@+id/imageContainer"
@@ -60,6 +60,7 @@
         android:gravity="left|center|end"
         android:text="Category"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -74,6 +75,7 @@
         android:gravity="left|center|end"
         android:text="Brand"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -88,6 +90,7 @@
         android:gravity="left|center|end"
         android:text="Slevees/Length"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -97,11 +100,12 @@
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="left|center|end"
-        android:text="Price"
         android:drawableLeft="@drawable/icon"
         android:drawablePadding="2dp"
+        android:gravity="left|center|end"
+        android:text="Price"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -117,6 +121,7 @@
         android:gravity="left|center|end"
         android:text="Season"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -126,11 +131,12 @@
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:gravity="left|center|end"
-        android:text="Tag"
         android:drawableLeft="@drawable/icon"
         android:drawablePadding="2dp"
+        android:gravity="left|center|end"
+        android:text="Tag"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -140,10 +146,11 @@
         android:layout_height="25dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:drawableLeft="@drawable/icon"
         android:gravity="left|center|end"
         android:text="Size"
-        android:drawableLeft="@drawable/icon"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -189,6 +196,7 @@
         android:gravity="right|center|end"
         android:text="Category"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.986"
         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -204,6 +212,7 @@
         android:gravity="right|center|end"
         android:text="Brand"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -219,6 +228,7 @@
         android:gravity="right|center|end"
         android:text="Sleeves"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -234,6 +244,7 @@
         android:gravity="right|center|end"
         android:text="Price"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -249,6 +260,7 @@
         android:gravity="right|center|end"
         android:text="Season"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView11"
@@ -266,6 +278,7 @@
         android:gravity="right|center|end"
         android:text="Tag"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView12"
@@ -281,6 +294,7 @@
         android:gravity="right|center|end"
         android:text="Size"
         android:textSize="18sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView13"

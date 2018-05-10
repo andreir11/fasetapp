@@ -25,6 +25,10 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class EmptyActivity1 extends AppCompatActivity {
 
     Button buttonCollege;
@@ -33,6 +37,8 @@ public class EmptyActivity1 extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     EditText CollectionName;
+    private String formattedDate;
+
     String Storage_Path = "Collection_Image_Uploads/";
     private String dateOfDate;
     // Root Database Name for Firebase Database.
@@ -62,10 +68,15 @@ public class EmptyActivity1 extends AppCompatActivity {
         imageUriOfPage = (Uri) intent.getData();
         //imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUriOfPage != null) {
-            text.setText("Save This Outfit On " + dateOfDate + "?");
+            //text.setText("Save This Outfit On " + dateOfDate + "?");
             // Update UI to reflect image being shared.  Here you would need to read the
             // data from the URI.
         }
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy");
+        formattedDate = df.format(c);
 
         buttonCollege.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,16 +128,16 @@ public class EmptyActivity1 extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             String ImageUploadId = databaseReference.push().getKey();
                             @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo2 imageUploadInfo = new ImageUploadInfo2(ImageUploadId,dateOfDate,taskSnapshot.getDownloadUrl().toString());
+                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName,taskSnapshot.getDownloadUrl().toString(),formattedDate);
 
                             // Getting image upload ID.
 
 
                             // Adding image upload id s child element into databaseReference.
-                            databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userDailyWear").child(ImageUploadId).setValue(imageUploadInfo);
+                            databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userCollage").child(ImageUploadId).setValue(imageUploadInfo);
 
-                            finish();
-                            Intent i = new Intent(EmptyActivity1.this, DisplayImagesDailyActivity.class);
+                            //finish();
+                            Intent i = new Intent(EmptyActivity1.this, SecondActivity.class);
                             i.addFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                             //startActivity(new Intent(EmptyActivity1.this, CalendarActivity.class));

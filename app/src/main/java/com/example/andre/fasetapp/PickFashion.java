@@ -212,7 +212,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
-            Intent intent = new Intent(this, EmptyActivity.class);
+            Intent intent = new Intent(this, EmptyActivity1.class);
             //intent.putExtra("Bitmap", bitmap);
 
             MimeTypeMap map = MimeTypeMap.getSingleton();

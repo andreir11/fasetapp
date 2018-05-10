@@ -1,15 +1,21 @@
 package com.example.andre.fasetapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.FileUriExposedException;
+import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,24 +23,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.security.cert.Extension;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import static android.content.Intent.EXTRA_STREAM;
-
-public class EmptyActivity extends AppCompatActivity {
+public class UpdateCollageDetail extends AppCompatActivity {
 
     Button buttonCollege;
     Uri imageUriOfPage;
@@ -42,16 +52,18 @@ public class EmptyActivity extends AppCompatActivity {
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
     EditText CollectionName;
-    public String formattedDate;
+    private String formattedDate;
     String Storage_Path = "Collection_Image_Uploads/";
-
+    private String dateOfDate;
     // Root Database Name for Firebase Database.
     public static final String Database_Path = "All_Image_Uploads_Database";
     ProgressDialog progressDialog ;
+    String imgId, imgLink, imgName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_empty);
+        setContentView(R.layout.activity_update_collage_detail);
+
         Intent intent = getIntent();
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -65,26 +77,28 @@ public class EmptyActivity extends AppCompatActivity {
         TextView text = (TextView) findViewById(R.id.textView2);
         buttonCollege = (Button) findViewById(R.id.buttonCl);
         CollectionName = (EditText) findViewById(R.id.CollectionNameText);
-        progressDialog = new ProgressDialog(EmptyActivity.this);
+        progressDialog = new ProgressDialog(UpdateCollageDetail.this);
 
-        Date c = Calendar.getInstance().getTime();
-        System.out.println("Current time => " + c);
-
-        SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy");
-        formattedDate = df.format(c);
-
+        //dateOfDate = getIntent().getStringExtra("CatchDate");
+        //text.setText(date);
         imageUriOfPage = (Uri) intent.getData();
-
-        CollectionName.setOnEditorActionListener(new DoneOnEditorActionListener());
-
-
         //imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUriOfPage != null) {
-            //text.setText(imageUriOfPage.toString());
+            //text.setText("Save This Outfit On " + dateOfDate + "?");
             // Update UI to reflect image being shared.  Here you would need to read the
             // data from the URI.
-            text.setText("");
         }
+
+        intent = getIntent();
+
+        imgId = intent.getStringExtra("imageId");
+        imgName = intent.getStringExtra("imageName");
+        imgLink = intent.getStringExtra("imageUrl");
+
+        Glide.with(this)
+                .load(imgLink)
+                .into(view);
+        CollectionName.setText(imgName);
 
         buttonCollege.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,12 +129,12 @@ public class EmptyActivity extends AppCompatActivity {
 
         // Checking whether FilePathUri Is empty or not.
         if (imageUriOfPage != null) {
-           //Toast.makeText(EmptyActivity.this, "ada", Toast.LENGTH_LONG).show();
+            //Toast.makeText(EmptyActivity.this, "ada", Toast.LENGTH_LONG).show();
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis() + "." + ".jpg" );
+            StorageReference ref = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis()  + ".jpg" );
             ref.putFile(imageUriOfPage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -128,15 +142,15 @@ public class EmptyActivity extends AppCompatActivity {
 
                             // Getting image name from EditText and store into string variable.
                             String TempImageName = CollectionName.getText().toString().trim();
-
+                            String date2 = "Apr 2 2018";
                             // Hiding the progressDialog after done uploading.
                             progressDialog.dismiss();
-                            String ImageUploadId = databaseReference.push().getKey();
+
                             // Showing toast message after done uploading.
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
-
+                            String ImageUploadId = databaseReference.push().getKey();
                             @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId,TempImageName, taskSnapshot.getDownloadUrl().toString(), formattedDate);
+                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName,taskSnapshot.getDownloadUrl().toString(),formattedDate);
 
                             // Getting image upload ID.
 
@@ -144,10 +158,13 @@ public class EmptyActivity extends AppCompatActivity {
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userCollage").child(ImageUploadId).setValue(imageUploadInfo);
 
-                            Intent i = new Intent (EmptyActivity.this, DisplayImagesDailyActivity.class);
-                            i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
+                            //finish();
+                            Intent i = new Intent(UpdateCollageDetail.this, SecondActivity.class);
+                            i.addFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
-                            Toast.makeText(EmptyActivity.this, "New Collage Has Been Uploaded", Toast.LENGTH_SHORT).show();
+                            //startActivity(new Intent(EmptyActivity1.this, CalendarActivity.class));
+
+
 
                             //Toast.makeText(EmptyActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }
@@ -156,7 +173,7 @@ public class EmptyActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(EmptyActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateCollageDetail.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
@@ -172,7 +189,7 @@ public class EmptyActivity extends AppCompatActivity {
 
         else {
 
-            Toast.makeText(EmptyActivity.this, "ga ada", Toast.LENGTH_LONG).show();
+            Toast.makeText(UpdateCollageDetail.this, "ga ada", Toast.LENGTH_LONG).show();
 
         }
     }

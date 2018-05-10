@@ -55,6 +55,8 @@
         <activity android:name=".QRcode" />
         <activity android:name=".save" />
         <activity android:name=".ShowImageGallery" />
+        <activity android:name=".ShowImageGalleryOfCollage" />
+        <activity android:name=".UpdateCollageDetail" />
         <activity android:name=".fabActivity"></activity>
     </application>
 
