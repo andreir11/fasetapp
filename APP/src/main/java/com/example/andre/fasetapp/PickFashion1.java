@@ -60,7 +60,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
     ProgressDialog progressDialog;
     public String position;
     // Creating List of ImageUploadInfo class.
-    List<ImageUploadInfo> list = new ArrayList<>();
+    List<ImageUploadAttributes> list = new ArrayList<>();
     ArrayAdapter<String> adapterarray;
     EditText editText;
     ArrayList<String> itemList = new ArrayList<String>();
@@ -157,7 +157,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
                 list.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
-                    ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                    ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
 
                     list.add(imageUploadInfo);
                 }
@@ -196,7 +196,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
             fOut.flush();
             fOut.close();
             file.setReadable(true, false);
-            Intent intent = new Intent(this, EmptyActivity1.class);
+            Intent intent = new Intent(this, EmptyActivity.class);
             //intent.putExtra("Bitmap", bitmap);
 
             MimeTypeMap map = MimeTypeMap.getSingleton();
@@ -249,12 +249,15 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
     @Override
     public void onItemClick(int position) {
 
+
+
+
         Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onWhatEverClick(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -263,7 +266,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose1);
-        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as top", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getname() + " as top", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -282,7 +285,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/4j4AfAqmPcPzVwOshvHwouhLvVw1%2FAll_Image_Uploads%2Fsample_5.jpg?alt=media&token=3b9dc544-53d1-47fb-b995-497693e644b0")
                 .into(img1);*/
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -291,14 +294,14 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose);
-        Toast.makeText(this,"You are selecting: " + selectedItem.getImageName() + " as bottom", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"You are selecting: " + selectedItem.getname() + " as bottom", Toast.LENGTH_SHORT).show();
 
 
 
     }
 
     public void onHats(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -307,11 +310,11 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose2);
-        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as Hats", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getname() + " as Hats", Toast.LENGTH_SHORT).show();
     }
 
     public void onShoes(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -320,11 +323,11 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose3);
-        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as Shoes", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getname() + " as Shoes", Toast.LENGTH_SHORT).show();
     }
 
     public void onAccesories(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -333,7 +336,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(imgChoose4);
-        Toast.makeText(this, "You are selecting: " + selectedItem.getImageName() + " as Accesories", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You are selecting: " + selectedItem.getname() + " as Accesories", Toast.LENGTH_SHORT).show();
     }
 
 

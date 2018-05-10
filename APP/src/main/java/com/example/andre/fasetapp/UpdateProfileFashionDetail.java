@@ -37,7 +37,7 @@ import java.util.List;
 
 public class UpdateProfileFashionDetail extends AppCompatActivity {
 
-    private EditText newName, newPrice, newTag, newCategory, newBrand, newSeason, newSize ;
+    private EditText newName, newPrice, newTag, newCategory, newBrand, newSeason, newSize, newSleeve ;
     private TextView newDate;
     private Button save;
     private FirebaseAuth firebaseAuth;
@@ -51,7 +51,7 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
     private Button btnChoose;
 
     private String tagHolder, seasonHolder;
-    private String itemCategory;
+    private String itemCategory, itemSleeve;
     private TextView textview;
 
     @Override
@@ -66,6 +66,7 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
         newSeason = (EditText)findViewById(R.id.ImageSeasonEditTextUpdate);
         newTag = (EditText)findViewById(R.id.ImageTagEditTextUpdate);
         newSize = (EditText) findViewById(R.id.ImageSizeEditTextUpdate);
+        newSleeve = (EditText) findViewById(R.id.ImageSleeveEditTextUpdate);
         //newDate = findViewById(R.id.dateOfInsert);
 
         textview =  (TextView)findViewById(R.id.textView1);
@@ -89,7 +90,7 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
 
         newName.setOnEditorActionListener(new DoneOnEditorActionListener());
 
-        imgUploadNew.setOnClickListener(new View.OnClickListener() {
+        /*imgUploadNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -99,7 +100,7 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Please Select Image"), Image_Request_Code);
             }
-        });
+        });*/
 
 
 
@@ -408,7 +409,7 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
                 final String[] category = new String[]{
                         "Top",
                         "Bottom",
-                        "Hat",
+                        "Jacket",
                         "Shoes",
                         "Accesories"
                 };
@@ -468,6 +469,70 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
 
         });
 
+        newSleeve.setFocusable(false);
+        newSleeve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] category = new String[]{
+                        "Long",
+                        "Short"
+                };
+
+                // Boolean array for initial selected items
+
+                final List<String> categoryList = Arrays.asList(category);
+
+                //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateProfileFashionDetail.this);
+
+                builder.setIcon(R.drawable.icon);
+                // Set a title for alert dialog
+                builder.setTitle("Category");
+
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(newName.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newPrice.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newBrand.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(newSize.getWindowToken(), 0);
+
+                builder.setSingleChoiceItems(category, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ImageTag.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        itemSleeve = category[i].toString();
+                        newSleeve.setText(itemSleeve);
+
+
+                    }
+                });
+
+                /*
+                // Set the negative/no button click listener
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the negative button
+                    }
+                });*/
+
+                // Set the neutral/cancel button click listener
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the neutral button
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+                dialog.show();
+
+
+            }
+
+        });
+
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
 
@@ -486,6 +551,7 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
                 newSeason.setText(updateAttr.getseason());
                 newBrand.setText(updateAttr.getbrand());
                 newSize.setText(updateAttr.getsize());
+                newSleeve.setText(updateAttr.getsleeve());
                 sameDate = updateAttr.getdate().toString();
                 sameLink = updateAttr.getImageURL().toString();
                 sameId = updateAttr.getid().toString();
@@ -509,10 +575,12 @@ public class UpdateProfileFashionDetail extends AppCompatActivity {
                 String brandUpdate = newBrand.getText().toString();
                 String categoryUpdate = newCategory.getText().toString();
                 String seasonUpdate = newSeason.getText().toString();
+                String sleeveUpdate = newSleeve.getText().toString();
 
                 validate();
 
-                ImageUploadAttributes userProfile = new ImageUploadAttributes(sameId, nameUpdate, sameLink, sameDate, tagUpdate, priceUpdate,brandUpdate,seasonUpdate,categoryUpdate,sizeUpdate);
+                ImageUploadAttributes userProfile = new ImageUploadAttributes(sameId, nameUpdate, sameLink, sameDate, tagUpdate, priceUpdate,
+                        brandUpdate,seasonUpdate,categoryUpdate,sizeUpdate, sleeveUpdate);
 
                 databaseReference.setValue(userProfile);
 

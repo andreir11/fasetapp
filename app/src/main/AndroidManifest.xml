@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.andre.fasetapp">
 
+    <uses-permission-sdk-23 android:name="android.permission.CAMERA" />
+    <uses-permission-sdk-23 android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -36,9 +38,12 @@
         <activity android:name=".ImagesActivity" />
         <activity android:name=".PickFashion" />
         <activity android:name=".FashionCollection" />
-        <activity android:windowSoftInputMode="stateAlwaysHidden" android:name=".GalleryActivity" />
+        <activity
+            android:name=".GalleryActivity"
+            android:windowSoftInputMode="stateAlwaysHidden" />
         <activity android:name=".DisplayImagesActivity" />
         <activity android:name=".DisplayImagesGalleryActivity" />
+        <activity android:name=".DisplayImagesCollageActivity" />
         <activity android:name=".ImageShowActivity" />
         <activity android:name=".EmptyActivity" />
         <activity android:name=".CalendarActivity" />
@@ -49,7 +54,8 @@
         <activity android:name=".UpdateProfileFashionDetail" />
         <activity android:name=".QRcode" />
         <activity android:name=".save" />
-        <activity android:name=".ShowImageGallery"></activity>
+        <activity android:name=".ShowImageGallery" />
+        <activity android:name=".fabActivity"></activity>
     </application>
 
 </manifest>

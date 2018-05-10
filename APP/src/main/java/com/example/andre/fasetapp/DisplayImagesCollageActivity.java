@@ -5,10 +5,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,13 +30,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import android.support.design.widget.BottomNavigationView;
-import android.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayImagesGalleryActivity extends AppCompatActivity implements RecyclerViewwAdapterr.OnItemClickListener {
+public class DisplayImagesCollageActivity extends AppCompatActivity implements RecyclerViewwAdapterrr.OnItemClickListener {
 
     // Creating DatabaseReference.
     DatabaseReference databaseReference;
@@ -45,7 +45,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
     RecyclerView recyclerView;
 
     // Creating RecyclerView.Adapter.
-    RecyclerViewwAdapterr adapter;
+    RecyclerViewwAdapterrr adapter;
     FirebaseAuth firebaseAuth;
     // Creating Progress dialog
     ProgressDialog progressDialog;
@@ -55,7 +55,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
     Button camerabtn;
 
     // Creating List of ImageUploadInfo class.
-    List<ImageUploadAttributes> list = new ArrayList<>();
+    List<ImageUploadInfo> list = new ArrayList<>();
 
     ImageView imgViewCamera;
 
@@ -68,14 +68,14 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
             switch (item.getItemId()) {
                 case R.id.navigation_cloth:
                     //mTextMessage.setText(R.string.title_home);
+                    finish();
+                    Intent i = new Intent(DisplayImagesCollageActivity.this, DisplayImagesGalleryActivity.class);
+                    //i.setFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(i);
                     break;
                 case R.id.navigation_collage:
                    // mTextMessage.setText(R.string.title_dashboard);
-                    finish();
-                    Intent i = new Intent(DisplayImagesGalleryActivity.this, DisplayImagesCollageActivity.class);
-                   //i.setFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
-                   startActivity(i);
-                   break;
+                    return true;
 
             }
             return false;
@@ -87,13 +87,13 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_display_images_gallery);
+        setContentView(R.layout.activity_display_images_collage);
         //imgViewCamera =(ImageView)findViewById(R.id.imagecameraView);
 
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         getSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Clothes");
+        getSupportActionBar().setTitle("Collages");
 
         //img = (ImageView)findViewById(R.id.imageView4) ;
         //img1 = (ImageView)findViewById(R.id.imageView6) ;
@@ -112,138 +112,30 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
         recyclerView.setLayoutManager(gridLayoutManager);
 
         // Assign activity this to progress dialog.
-        progressDialog = new ProgressDialog(DisplayImagesGalleryActivity.this);
+        progressDialog = new ProgressDialog(DisplayImagesCollageActivity.this);
 
         // Setting up message in Progress dialog.
         progressDialog.setMessage("Loading Images From Firebase.");
 
         // Showing progress dialog.
         progressDialog.show();
-        adapter = new RecyclerViewwAdapterr(DisplayImagesGalleryActivity.this, list);
+        adapter = new RecyclerViewwAdapterrr(DisplayImagesCollageActivity.this, list);
         recyclerView.setAdapter(adapter);
-        adapter.setOnItemClickListener(DisplayImagesGalleryActivity.this);
-
+        adapter.setOnItemClickListener(DisplayImagesCollageActivity.this);
 
         //recyclerView.setAdapter(new G);
         mStorage = FirebaseStorage.getInstance();
+
+        //btnSort = (Button)findViewById()R.id.buu;
         camerabtn = (Button)findViewById(R.id.buttonSorting2);
-
-
-
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-
-
-
-
-
-
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userGallery");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userCollage");
 
-        camerabtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent,0);
-
-
-            }
-        });
-
-
-
-        btnSort.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                listitems = new String[]{"All","Top","Bottom","Jacket","Shoes","Accesories"};
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DisplayImagesGalleryActivity.this);
-                mBuilder.setTitle("Sort By :");
-                mBuilder.setIcon(R.drawable.icon);
-                mBuilder.setSingleChoiceItems(listitems, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        btnSort.setText("Sort By : " +listitems[i]);
-                        dialogInterface.dismiss();
-                        String item = listitems[i].toString();
-
-                        if(listitems[i] == "All"){
-                            mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-
-                                    list.clear();
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
-                                        imageUploadInfo.setKey(postSnapshot.getKey());
-                                        list.add(imageUploadInfo);
-                                    }
-                                    adapter.notifyDataSetChanged();
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-                                }
-
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-
-                                }
-                            });
-
-                        }
-
-                        else {
-
-                            Query query = databaseReference.orderByChild("category").equalTo(listitems[i]);
-                            // Adding Add Value Event Listener to databaseReference.
-                            mDBListener = query.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-
-                                    list.clear();
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
-                                        imageUploadInfo.setKey(postSnapshot.getKey());
-                                        list.add(imageUploadInfo);
-                                    }
-                                    adapter.notifyDataSetChanged();
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-                                }
-
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-
-                                }
-                            });
-
-
-                        }
-                    }
-                });
-                mBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-
-                    }
-                });
-                AlertDialog mDialog = mBuilder.create();
-                mDialog.show();
-            }
-        });
         // Adding Add Value Event Listener to databaseReference.
         mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -251,7 +143,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
 
                 list.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                    ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
+                    ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
                     imageUploadInfo.setKey(postSnapshot.getKey());
                     list.add(imageUploadInfo);
                 }
@@ -292,7 +184,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
 
     @Override
     public void onItemClick(int position) {
-        ImageUploadAttributes selectedItem = list.get(position);
+        ImageUploadInfo selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -303,13 +195,13 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
                 .into(imgChoose2);*/
 
 
-        Intent i = new Intent(DisplayImagesGalleryActivity.this , ShowImageGallery.class);
-        i.putExtra("imgId", selectedItem.getid());
+        Intent i = new Intent(DisplayImagesCollageActivity.this , ShowImageGalleryOfCollage.class);
+       /* i.putExtra("imgId", selectedItem.getid());
         i.putExtra("link", selectedItem.getImageURL());
         i.putExtra("alias", selectedItem.getname());
         i.putExtra("date", selectedItem.getdate());
         i.putExtra("price", selectedItem.getprice());
-        i.putExtra("tag", selectedItem.gettag());
+        i.putExtra("tag", selectedItem.gettag());*/
         startActivity(i);
         //Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
     }
@@ -320,17 +212,17 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
                 .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/image%2Fwhite_1.jpg?alt=media&token=c6cd5a49-7e5f-4352-9f02-5a7a5fcb4ccc")
                 .into(img);*/
 
-        ImageUploadAttributes selectedItem = list.get(position);
+        ImageUploadInfo selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
-        Intent i = new Intent(DisplayImagesGalleryActivity.this , ShowImageGallery.class);
-        i.putExtra("imgId", selectedItem.getid());
+        Intent i = new Intent(DisplayImagesCollageActivity.this , ShowImageGallery.class);
+        /*i.putExtra("imgId", selectedItem.getid());
         i.putExtra("link", selectedItem.getImageURL());
         i.putExtra("alias", selectedItem.getname());
         i.putExtra("date", selectedItem.getdate());
         i.putExtra("price", selectedItem.getprice());
-        i.putExtra("tag", selectedItem.gettag());
+        i.putExtra("tag", selectedItem.gettag());*/
         startActivity(i);
         //Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
     }
@@ -340,7 +232,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
 
     @Override
     public void onDeleteClick(int position) {
-        ImageUploadAttributes selectedItem = list.get(position);
+        ImageUploadInfo selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -348,7 +240,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
             @Override
             public void onSuccess(Void aVoid) {
                 databaseReference.child(selectedKey).removeValue();
-                Toast.makeText(DisplayImagesGalleryActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DisplayImagesCollageActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
             }
         });
         /*Glide.with(this)
@@ -359,7 +251,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
 
     public void runQrcode(View v) {
 
-        Intent it = new Intent(DisplayImagesGalleryActivity.this, QRcode.class);
+        Intent it = new Intent(DisplayImagesCollageActivity.this, QRcode.class);
         it.putExtra("userid",firebaseAuth.getCurrentUser().toString());
         startActivity(it);
     }
@@ -385,7 +277,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
                 break;
             }
             case R.id.profileMenu:
-                startActivity(new Intent(DisplayImagesGalleryActivity.this, ProfileActivity.class));
+                startActivity(new Intent(DisplayImagesCollageActivity.this, ProfileActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);

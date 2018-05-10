@@ -18,12 +18,14 @@ public class ImageUploadAttributes {
     public String imageURL;
     private String mKey;
     public String id;
+    private String sleeve;
 
     public ImageUploadAttributes() {
 
     }
 
-    public ImageUploadAttributes(String id, String name, String url, String date, String tag, String price, String brnd, String sson, String ctgory, String sze) {
+    public ImageUploadAttributes(String id, String name, String url, String date, String tag, String price,
+                                 String brnd, String sson, String ctgory, String sze, String slv) {
         this.id = id;
         this.name = name;
         this.imageURL= url;
@@ -34,6 +36,7 @@ public class ImageUploadAttributes {
         this.season = sson;
         this.category=ctgory;
         this.size = sze;
+        this.sleeve = slv;
     }
 
     public String getid() {return id;}
@@ -72,6 +75,9 @@ public class ImageUploadAttributes {
 
     public String getsize() {
         return size;
+    }
+    public String getsleeve() {
+        return sleeve;
     }
 
     @Exclude

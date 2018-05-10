@@ -92,7 +92,7 @@ public class SecondActivity extends AppCompatActivity {
         customize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SecondActivity.this, CalendarActivity.class));
+                startActivity(new Intent(SecondActivity.this, PickFashion.class));
             }
         });
 
@@ -106,15 +106,15 @@ public class SecondActivity extends AppCompatActivity {
         Clothecabinet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             Intent it=new Intent(SecondActivity.this,VirturalCabinet.class);
+             /*Intent it=new Intent(SecondActivity.this,VirturalCabinet.class);
              it.putExtra("ID",firebaseAuth.getCurrentUser().getUid());
-             startActivity(it);
+             startActivity(it);*/
             }
         });
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SecondActivity.this, GalleryActivity.class));
+                startActivity(new Intent(SecondActivity.this, DisplayImagesGalleryActivity.class));
             }
         });
 
@@ -123,7 +123,8 @@ public class SecondActivity extends AppCompatActivity {
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Logout();
+                startActivity(new Intent(SecondActivity.this, DisplayImagesDailyActivity.class));
+                //Logout();
             }
         });
     }
@@ -145,14 +146,33 @@ public class SecondActivity extends AppCompatActivity {
 
         switch(item.getItemId()){
             case R.id.logoutMenu:{
-                //Logout();
-                firebaseAuth.signOut();
+                Logout();
+                break;
+                /*firebaseAuth.signOut();
                 finish();
-                startActivity(new Intent(SecondActivity.this, MainActivity.class));
+                startActivity(new Intent(SecondActivity.this, MainActivity.class));*/
             }
             case R.id.profileMenu:
                 startActivity(new Intent(SecondActivity.this, ProfileActivity.class));
+                break;
+            case R.id.refreshMenu:
+                Logout();
+                break;
+
         }
+
+
+
+
+
         return super.onOptionsItemSelected(item);
+    }
+
+    public void runQrcode(View view) {
+        Intent it = new Intent(SecondActivity.this, QRcode.class);
+        String userID = firebaseAuth.getCurrentUser().getUid();
+        it.putExtra("userid",userID);
+        startActivity(it);
+
     }
 }

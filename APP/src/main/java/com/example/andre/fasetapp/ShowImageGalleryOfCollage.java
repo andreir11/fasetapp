@@ -1,8 +1,8 @@
 package com.example.andre.fasetapp;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +18,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class ShowImageGallery extends AppCompatActivity {
+public class ShowImageGalleryOfCollage extends AppCompatActivity {
 
     private ImageView imgContainer;
     private TextView txtAlias;
@@ -37,7 +37,7 @@ public class ShowImageGallery extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_show_image_gallery);
+        setContentView(R.layout.activity_show_image_gallery_of_collage);
 
         imgContainer = (ImageView)findViewById(R.id.imageContainer);
         txtAlias = (TextView)findViewById(R.id.textAlias);
@@ -73,7 +73,7 @@ public class ShowImageGallery extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(ShowImageGallery.this, UpdateProfileFashionDetail.class);
+                Intent i = new Intent(ShowImageGalleryOfCollage.this, UpdateProfileFashionDetail.class);
                 i.putExtra("imageId", imgId);
                 i.putExtra("imageUrl", imgLink);
                 startActivity(i);
@@ -104,7 +104,7 @@ public class ShowImageGallery extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Toast.makeText(ShowImageGallery.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ShowImageGalleryOfCollage.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
             }
         });
 

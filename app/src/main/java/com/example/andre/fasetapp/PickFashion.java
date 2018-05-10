@@ -75,7 +75,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
     ProgressDialog progressDialog;
     public String position;
     // Creating List of ImageUploadInfo class.
-    List<ImageUploadInfo> list = new ArrayList<>();
+    List<ImageUploadAttributes> list = new ArrayList<>();
     ArrayAdapter<String> adapterarray;
     EditText editText;
     ArrayList<String> itemList = new ArrayList<String>();
@@ -119,7 +119,9 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
             ImageView image = new ImageView(PickFashion.this);
             image.setLayoutParams(new android.view.ViewGroup.LayoutParams(500, 480));
 
-            image.setMaxHeight(200);
+            image.set
+
+            MaxHeight(200);
             image.setMaxWidth(180);
             int width = 50;
             image.setX(60 + width);
@@ -171,7 +173,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
                 list.clear();
                 for (DataSnapshot postSnapshot : snapshot.getChildren()) {
 
-                    ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                    ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
 
                     list.add(imageUploadInfo);
                 }
@@ -266,7 +268,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
 
     @Override
     public void onWhatEverClick(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -294,7 +296,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
         Glide.with(this)
                 .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/4j4AfAqmPcPzVwOshvHwouhLvVw1%2FAll_Image_Uploads%2Fsample_5.jpg?alt=media&token=3b9dc544-53d1-47fb-b995-497693e644b0")
                 .into(img1);*/
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -310,7 +312,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
     }
 
     public void onHats(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -323,7 +325,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
     }
 
     public void onShoes(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
@@ -336,7 +338,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
     }
 
     public void onAccesories(int position) {
-        ImageUploadInfo selectedItem = list.get(position);
+        ImageUploadAttributes selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
 
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());

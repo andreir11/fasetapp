@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -25,8 +26,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -34,10 +38,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class GalleryActivity extends AppCompatActivity {
 
@@ -51,9 +57,10 @@ public class GalleryActivity extends AppCompatActivity {
     Button ChooseButton, UploadButton, DisplayImageButton;
 
     // Creating EditText.
-    EditText ImageName, ImageCategory, ImageTag, ImagePrice, ImageSeason, ImageBrand, ImageSize ;
-
+    EditText ImageName, ImageCategory, ImageTag, ImagePrice, ImageSeason, ImageBrand, ImageSize, ImageSleeve ;
+    TextInputLayout ImageSleeveInput;
     String itemCategory;
+    String itemSleeve;
     // Creating ImageView.
     ImageView SelectImage;
 
@@ -62,7 +69,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     // Creating StorageReference and DatabaseReference object.
     StorageReference storageReference;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference ,dbRef;
     FirebaseAuth firebaseAuth;
     TextView textview;
     // Image request code for onActivityResult() .
@@ -72,6 +79,7 @@ public class GalleryActivity extends AppCompatActivity {
 
     String formattedDate;
     String tagHolder, seasonHolder;
+    private String nameCheck;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +91,12 @@ public class GalleryActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         // Assign FirebaseDatabase instance with root database name.
         databaseReference = FirebaseDatabase.getInstance().getReference("users");
+        dbRef=FirebaseDatabase.getInstance().getReference("users");
         textview =  (TextView)findViewById(R.id.textView1);
         //Assign ID'S to button.
         ChooseButton = (Button)findViewById(R.id.ButtonChooseImage);
         UploadButton = (Button)findViewById(R.id.ButtonUploadImage);
+
 
         //DisplayImageButton = (Button)findViewById(R.id.DisplayImagesButton);
 
@@ -98,6 +108,9 @@ public class GalleryActivity extends AppCompatActivity {
         ImageTag = (EditText)findViewById(R.id.ImageTagEditText);
         ImageBrand = (EditText)findViewById(R.id.ImageBrandEditText);
         ImageSize = (EditText)findViewById(R.id.ImageSizeEditText);
+        ImageSleeve = (EditText)findViewById(R.id.ImageSleeveEditText);
+        ImageSleeveInput = (TextInputLayout)findViewById(R.id.ImageSleeveTextInput);
+
         // Assign ID'S to image view.
         SelectImage = (ImageView)findViewById(R.id.ShowImageUpload);
 
@@ -113,10 +126,19 @@ public class GalleryActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(GalleryActivity.this);
 
 
+        ImageSleeve.setVisibility(View.GONE);
+        ImageSleeveInput.setVisibility(View.GONE);
 
+        ImageName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageName.setOnEditorActionListener(new DoneOnEditorActionListener());
+            }
+        });
 
-
-        ImageName.setOnEditorActionListener(new DoneOnEditorActionListener());
+       // ImageBrand.setFocusable(false);
+       // ImagePrice.setFocusable(false);
+       // ImageSize.setFocusable(false);
 
         SelectImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -433,7 +455,7 @@ public class GalleryActivity extends AppCompatActivity {
                 final String[] category = new String[]{
                         "Top",
                         "Bottom",
-                        "Hat",
+                        "Jacket",
                         "Shoes",
                         "Accesories"
                 };
@@ -462,6 +484,26 @@ public class GalleryActivity extends AppCompatActivity {
                         dialogInterface.dismiss();
                         itemCategory = category[i].toString();
                         ImageCategory.setText(itemCategory);
+
+                        if(itemCategory == "Top" || itemCategory == "Bottom"){
+                            ImageSleeve.setVisibility(View.VISIBLE);
+                            ImageSleeveInput.setVisibility(View.VISIBLE);
+
+                        }
+
+                        else if(itemCategory=="Jacket"){
+                            ImageSleeve.setVisibility(View.GONE);
+                            ImageSleeveInput.setVisibility(View.GONE);
+                            itemSleeve = "Long";
+                        }
+
+
+                        else{
+                            ImageSleeveInput.setVisibility(View.GONE);
+                            ImageSleeve.setVisibility(View.GONE);
+                            itemSleeve = "none";
+
+                        }
 
 
                     }
@@ -493,7 +535,69 @@ public class GalleryActivity extends AppCompatActivity {
 
         });
 
+        ImageSleeve.setFocusable(false);
+        ImageSleeve.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] category = new String[]{
+                        "Long",
+                        "Short"
+                };
 
+                // Boolean array for initial selected items
+
+                final List<String> categoryList = Arrays.asList(category);
+
+                //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
+                AlertDialog.Builder builder = new AlertDialog.Builder(GalleryActivity.this);
+
+                builder.setIcon(R.drawable.icon);
+                // Set a title for alert dialog
+                builder.setTitle("Category");
+
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(ImageName.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(ImagePrice.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(ImageBrand.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(ImageSize.getWindowToken(), 0);
+
+                builder.setSingleChoiceItems(category, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ImageTag.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        itemSleeve = category[i].toString();
+                        ImageSleeve.setText(itemSleeve);
+
+
+                    }
+                });
+
+                /*
+                // Set the negative/no button click listener
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the negative button
+                    }
+                });*/
+
+                // Set the neutral/cancel button click listener
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the neutral button
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+                dialog.show();
+
+
+            }
+
+        });
 
 
 
@@ -637,6 +741,23 @@ public class GalleryActivity extends AppCompatActivity {
 
     }
 
+    private void collectPhoneNumbers(Map<String,Object> users) {
+
+        ArrayList<String> phoneNumbers = new ArrayList<>();
+
+        //iterate through each user, ignoring their UID
+        for (Map.Entry<String, Object> entry : users.entrySet()){
+
+            //Get user map
+            Map singleUser = (Map) entry.getValue();
+            //Get phone field and append to list
+            phoneNumbers.add((String) singleUser.get("name"));
+        }
+        nameCheck = ImageName.getText().toString();
+
+        System.out.println(phoneNumbers.toString());
+    }
+
     // Creating UploadImageFileToFirebaseStorage method to upload image on storage.
     public void UploadImageFileToFirebaseStorage() {
 
@@ -649,8 +770,38 @@ public class GalleryActivity extends AppCompatActivity {
             // Showing progressDialog.
             progressDialog.show();
 
+            //databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").child("name");
+            /*dbRef.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery");
+            final String nameCheck = ImageName.getText().toString();
+            dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    //collectPhoneNumbers((Map<String,Object>) dataSnapshot.getValue());
+                    /*if(dataSnapshot.child(nameCheck).exists())
+                    {
+                        ImageName.setError("Name have to be unique");
+                    }
+                    String UserNameCheck = "";
+                    for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                        UserNameCheck = (String) dsp.getValue(); //add result into array list
+
+                    }
+                    if(UserNameCheck == ImageName.getText().toString())
+                    {
+                        ImageName.setError("Name have to be unique");
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });*/
             // Creating second StorageReference.
-            StorageReference storageReference2nd = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis() + "." + GetFileExtension(FilePathUri));
+           final String ImageUploadId = databaseReference.push().getKey();
+            StorageReference storageReference2nd = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path).child(ImageUploadId).child(ImageName.getText().toString()+ "." + GetFileExtension(FilePathUri));
+
 
             // Adding addOnSuccessListener to second StorageReference.
             storageReference2nd.putFile(FilePathUri)
@@ -669,13 +820,13 @@ public class GalleryActivity extends AppCompatActivity {
                             //price
 
                             // Getting image upload ID.
-                            String ImageUploadId = databaseReference.push().getKey();
+
                             // Showing toast message after done uploading.
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
                             @SuppressWarnings("VisibleForTests")
                             ImageUploadAttributes imageUploadInfo = new ImageUploadAttributes(ImageUploadId.toString(),TempImageName, taskSnapshot.getDownloadUrl().toString(),
-                                    formattedDate,tagHolder,TempImagePrice,TempImageBrand,seasonHolder,itemCategory, TempImageSize);
+                                    formattedDate,tagHolder,TempImagePrice,TempImageBrand,seasonHolder,itemCategory, TempImageSize, itemSleeve);
 
 
 
@@ -683,7 +834,8 @@ public class GalleryActivity extends AppCompatActivity {
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").child(ImageUploadId).setValue(imageUploadInfo);
                             Intent i = new Intent(GalleryActivity.this, SecondActivity.class);
 
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
 
                         }

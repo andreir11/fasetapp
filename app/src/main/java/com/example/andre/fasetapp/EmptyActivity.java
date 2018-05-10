@@ -28,6 +28,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.security.cert.Extension;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 import static android.content.Intent.EXTRA_STREAM;
 
@@ -63,13 +66,23 @@ public class EmptyActivity extends AppCompatActivity {
         CollectionName = (EditText) findViewById(R.id.CollectionNameText);
         progressDialog = new ProgressDialog(EmptyActivity.this);
 
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy");
+        String formattedDate = df.format(c);
 
         imageUriOfPage = (Uri) intent.getData();
+
+        CollectionName.setOnEditorActionListener(new DoneOnEditorActionListener());
+
+
         //imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUriOfPage != null) {
-            text.setText(imageUriOfPage.toString());
+            //text.setText(imageUriOfPage.toString());
             // Update UI to reflect image being shared.  Here you would need to read the
             // data from the URI.
+            text.setText("");
         }
 
         buttonCollege.setOnClickListener(new View.OnClickListener() {
@@ -130,8 +143,10 @@ public class EmptyActivity extends AppCompatActivity {
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userCollage").child(ImageUploadId).setValue(imageUploadInfo);
 
-                            startActivity(new Intent(EmptyActivity.this, SecondActivity.class));
-
+                            Intent i = new Intent (EmptyActivity.this, DisplayImagesDailyActivity.class);
+                            i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(i);
+                            Toast.makeText(EmptyActivity.this, "New Collage Has Been Uploaded", Toast.LENGTH_SHORT).show();
 
                             //Toast.makeText(EmptyActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         }

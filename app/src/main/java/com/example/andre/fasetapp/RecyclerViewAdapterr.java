@@ -25,11 +25,11 @@ import java.util.List;
 class RecyclerViewAdapterr extends RecyclerView.Adapter<RecyclerViewAdapterr.ViewHolder> {
 
     Context context;
-    public List<ImageUploadInfo> MainImageUploadInfoList;
+    public List<ImageUploadAttributes> MainImageUploadInfoList;
     private OnItemClickListener mListener;
-    public ImageUploadInfo UploadInfo;
+    public ImageUploadAttributes UploadInfo;
 
-    public RecyclerViewAdapterr(Context context, List<ImageUploadInfo> TempList) {
+    public RecyclerViewAdapterr(Context context, List<ImageUploadAttributes> TempList) {
 
         this.MainImageUploadInfoList = TempList;
 
@@ -48,9 +48,9 @@ class RecyclerViewAdapterr extends RecyclerView.Adapter<RecyclerViewAdapterr.Vie
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        ImageUploadInfo UploadInfo = MainImageUploadInfoList.get(position);
+        ImageUploadAttributes UploadInfo = MainImageUploadInfoList.get(position);
 
-        holder.imageNameTextView.setText(UploadInfo.getImageName());
+        holder.imageNameTextView.setText(UploadInfo.getname());
 
         //Loading image from Glide library.
         Glide.with(context).load(UploadInfo.getImageURL()).into(holder.imageView);
@@ -93,7 +93,7 @@ class RecyclerViewAdapterr extends RecyclerView.Adapter<RecyclerViewAdapterr.Vie
             menu.setHeaderTitle("Select Action");
             MenuItem doWhatever = menu.add(Menu.NONE, 1, 1, "Top");
             MenuItem delete = menu.add(Menu.NONE, 2, 2, "Bottom");
-            MenuItem onHats = menu.add(Menu.NONE, 3, 3, "Hats");
+            MenuItem onHats = menu.add(Menu.NONE, 3, 3, "Coat");
             MenuItem onShoes = menu.add(Menu.NONE, 4, 4, "Shoes");
             MenuItem onAccessories = menu.add(Menu.NONE, 5, 5, "Accesories");
 

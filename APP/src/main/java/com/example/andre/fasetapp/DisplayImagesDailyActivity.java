@@ -1,6 +1,8 @@
 package com.example.andre.fasetapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -87,13 +89,12 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
 
                 Intent i = new Intent(DisplayImagesDailyActivity.this, PickFashion1.class);
                 i.putExtra("Catch",date);
-                finish();
+                //finish();
                 startActivity(i);
             }
         });
 
-        //img = (ImageView)findViewById(R.id.imageView4) ;
-        //img1 = (ImageView)findViewById(R.id.imageView6) ;
+
         firebaseAuth = FirebaseAuth.getInstance();
         // Assign id to RecyclerView.
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -124,7 +125,7 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         mStorage = FirebaseStorage.getInstance();
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
-        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userGallery");
+        databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userCollage");
 
         // Adding Add Value Event Listener to databaseReference.
         mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
@@ -160,8 +161,72 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
 
     @Override
     public void onItemClick(int position) {
+        ImageUploadInfo selectedItem = list.get(position);
+        final String selectedKey = selectedItem.getKey();
 
-        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+        final String DailyUrl =  selectedItem.getImageURL();
+        final String CollageName = selectedItem.getImageName();
+        final String Date = date;
+
+        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
+        //textDisplay.setText(selectedItem.getImageURL());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(DisplayImagesDailyActivity.this);
+
+        // Set a title for alert dialog
+        builder.setTitle("On " +date);
+
+        // Ask the final question
+        builder.setMessage("Are you sure want to select this outfit ?");
+
+        // Set the alert dialog yes button click listener
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when user clicked the Yes button
+                // Set the TextView visibility GONE
+                //tv.setVisibility(View.GONE);
+
+
+                String ImageUploadId = databaseReference.push().getKey();
+                ImageUploadInfoWithDateOnCalendar imageUploadInfo = new ImageUploadInfoWithDateOnCalendar(CollageName,DailyUrl,Date);
+
+                // Getting image upload ID.
+
+
+                // Adding image upload id s child element into databaseReference.
+                databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+
+                //finish();
+                Intent i = new Intent(DisplayImagesDailyActivity.this, CalendarActivity.class);
+                i.setFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+                //startActivity(n
+
+
+
+
+
+                Toast.makeText(getApplicationContext(),
+                        "Your outfit have been saved on " +date,Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Set the alert dialog no button click listener
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when No button clicked
+               // Toast.makeText(getApplicationContext(),"No Button Clicked",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        // Display the alert dialog on interface
+        dialog.show();
+
+
+        //Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -176,7 +241,7 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         Glide.with(this)
                 .load(selectedItem.getImageURL())
                 .into(img);
-        UploadImageFileToFirebaseStorage();
+        //UploadImageFileToFirebaseStorage();
 
 
 

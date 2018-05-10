@@ -126,8 +126,8 @@ public class EmptyActivity1 extends AppCompatActivity {
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userDailyWear").child(ImageUploadId).setValue(imageUploadInfo);
 
                             finish();
-                            Intent i = new Intent(EmptyActivity1.this, CalendarActivity.class);
-                            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            Intent i = new Intent(EmptyActivity1.this, DisplayImagesDailyActivity.class);
+                            i.addFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                             //startActivity(new Intent(EmptyActivity1.this, CalendarActivity.class));
 

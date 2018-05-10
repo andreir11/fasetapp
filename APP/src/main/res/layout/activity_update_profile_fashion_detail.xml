@@ -24,7 +24,9 @@
                 android:text="Choose Image To Upload"
                 android:layout_marginTop="20dp"
                 android:textSize="20dp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
 
             <ImageView
                 android:layout_width="fill_parent"
@@ -41,7 +43,8 @@
                 android:layout_below="@+id/ShowImage"
                 android:layout_marginTop="20dp"
                 android:selectAllOnFocus="false"
-                android:text="Choose Image" />
+                android:text="Choose Image"
+                android:visibility="gone" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_height = "wrap_content"
@@ -76,10 +79,30 @@
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Category"
-                    android:selectAllOnFocus="true"
+                    android:selectAllOnFocus="false"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_height = "wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent">
+
+                <EditText
+                    android:id="@+id/ImageSleeveEditTextUpdate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:drawableLeft="@drawable/icon"
+                    android:drawablePadding="2dp"
+                    android:gravity="center_horizontal|center|start"
+                    android:hint="Sleeves/Length"
+                    android:imeOptions="actionDone"
+                    android:selectAllOnFocus="false"
+                    android:singleLine="true" />
+            </android.support.design.widget.TextInputLayout>
+
 
             <android.support.design.widget.TextInputLayout
                 android:layout_height = "wrap_content"
@@ -178,13 +201,13 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/ButtonUploadImageUpdate"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/ButtonUploadImageUpdate"
                 android:layout_below="@+id/ImageNameEditTextUpdate"
-                android:selectAllOnFocus="false"
                 android:layout_marginTop="20dp"
-                android:text="Upload image"/>
+                android:selectAllOnFocus="false"
+                android:text="Confirm" />
 
 
 

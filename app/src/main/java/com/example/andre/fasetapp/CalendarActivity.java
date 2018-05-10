@@ -39,6 +39,7 @@ import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -125,11 +126,11 @@ public class CalendarActivity extends AppCompatActivity{
         });
 
 */
-
+        imageD.setVisibility(View.INVISIBLE);
         buttonToSelectC.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(CalendarActivity.this, PickFashion1.class);
+                Intent i = new Intent(CalendarActivity.this, DisplayImagesDailyActivity.class);
                 i.putExtra("CatchDate",aa);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //onStop();
@@ -167,6 +168,19 @@ public class CalendarActivity extends AppCompatActivity{
                 .setCalendarDisplayMode(CalendarMode.MONTHS)
                 .commit();
 
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy");
+        String formattedDate = df.format(c);
+
+        Calendar calendar = Calendar.getInstance();
+        materialCalendarView.setDateSelected(calendar.getTime(), true);
+
+        materialCalendarView.getCurrentDate();
+
+
+
 
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
         @Override
@@ -174,7 +188,8 @@ public class CalendarActivity extends AppCompatActivity{
 
             buttonToSelectC.setVisibility(View.VISIBLE);
             //buttonToSelectD.setVisibility(View.VISIBLE);
-
+            imageD.setVisibility(View.VISIBLE);
+            textView4.setVisibility(View.VISIBLE);
             aa = FORMATTER.format(date.getDate());
             String ab = aa.toString();
 
@@ -185,7 +200,7 @@ public class CalendarActivity extends AppCompatActivity{
             //myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userInfo").child("userName").setValue("test");
 
             //Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").orderByChild("imageName").equalTo("upup");
-            Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userDailyWear").orderByChild("imageDateD").equalTo(ab);
+            Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userDailyWear").orderByChild("imageDailyD").equalTo(ab);
 
 
             query.addValueEventListener(new ValueEventListener() {
