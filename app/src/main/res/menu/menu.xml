@@ -2,19 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+
+
+
     <item
-        android:id="@+id/logoutMenu"
-        android:orderInCategory="100"
-        app:showAsAction="always"
+        android:id="@+id/refreshMenu"
+        android:orderInCategory="300"
+        app:showAsAction="never"
         android:title="Logout">
     </item>
 
-    <item
-        android:id="@+id/sortMenu"
-        android:orderInCategory="400"
-        app:showAsAction="always"
-        android:title="Sort">
-    </item>
+
 
     <item
         android:id="@+id/profileMenu"
@@ -22,18 +20,5 @@
         app:showAsAction="never"
         android:title="Profile">
     </item>
-
-    <item
-        android:id="@+id/refreshMenu"
-        android:orderInCategory="300"
-        app:showAsAction="never"
-        android:title="Refresh">
-    </item>
-
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="my menu Item!"
-        app:showAsAction="never"/>
 
 </menu>

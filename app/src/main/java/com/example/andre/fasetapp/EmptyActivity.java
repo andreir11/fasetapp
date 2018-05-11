@@ -9,6 +9,7 @@ import android.os.FileUriExposedException;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -90,6 +91,7 @@ public class EmptyActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                validate();
                 // Calling method to upload selected image on Firebase storage.
                 UploadImageFileToFirebaseStorage();
 
@@ -114,13 +116,13 @@ public class EmptyActivity extends AppCompatActivity {
     public void UploadImageFileToFirebaseStorage() {
 
         // Checking whether FilePathUri Is empty or not.
-        if (imageUriOfPage != null) {
-           //Toast.makeText(EmptyActivity.this, "ada", Toast.LENGTH_LONG).show();
+        if (imageUriOfPage != null && validate()) {
+            //Toast.makeText(EmptyActivity.this, "ada", Toast.LENGTH_LONG).show();
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
-            StorageReference ref = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis() + "." + ".jpg" );
+            StorageReference ref = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis() + "." + ".jpg");
             ref.putFile(imageUriOfPage)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -136,16 +138,15 @@ public class EmptyActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
                             @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId,TempImageName, taskSnapshot.getDownloadUrl().toString(), formattedDate);
+                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName, taskSnapshot.getDownloadUrl().toString(), formattedDate);
 
                             // Getting image upload ID.
-
 
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userCollage").child(ImageUploadId).setValue(imageUploadInfo);
 
-                            Intent i = new Intent (EmptyActivity.this, DisplayImagesDailyActivity.class);
-                            i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
+                            Intent i = new Intent(EmptyActivity.this, DisplayImagesDailyActivity.class);
+                            i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP | i.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                             Toast.makeText(EmptyActivity.this, "New Collage Has Been Uploaded", Toast.LENGTH_SHORT).show();
 
@@ -156,26 +157,58 @@ public class EmptyActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             progressDialog.dismiss();
-                            Toast.makeText(EmptyActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EmptyActivity.this, "Failed " + e.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot
                                     .getTotalByteCount());
-                            progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                            progressDialog.setMessage("Uploaded " + (int) progress + "%");
                         }
                     });
-        }
+        } else {
 
-
-        else {
-
-            Toast.makeText(EmptyActivity.this, "ga ada", Toast.LENGTH_LONG).show();
+            Toast.makeText(EmptyActivity.this, "Give initial/name to your outfit", Toast.LENGTH_LONG).show();
 
         }
     }
+
+    private Boolean validate(){
+        Boolean result = false;
+
+        String CheckName = CollectionName.getText().toString();
+
+
+        /*String passwordHandler = password.getText().toString();
+        if (password.isEmpty() || password.length() < 6) {  passwordText.setError("Password cannot be less than 6 characters!");
+        }
+        else {
+            passwordText.setError(null);
+            startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+        }*/
+        if(TextUtils.isEmpty(CheckName)){
+            CollectionName.setError("The item cannot be empty");
+        }
+
+
+
+
+//isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty() || imagePath != null
+
+
+
+        else{
+            result = true;
+        }
+
+        return result;
+    }
+
+
+
+
 
 
 }

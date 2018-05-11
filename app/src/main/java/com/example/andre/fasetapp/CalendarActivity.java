@@ -222,7 +222,7 @@ public class CalendarActivity extends AppCompatActivity{
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
-
+                    Toast.makeText(getApplicationContext(), "No record on " + aa, Toast.LENGTH_LONG).show();
                 }
             });
 

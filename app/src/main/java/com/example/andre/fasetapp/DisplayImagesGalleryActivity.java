@@ -61,6 +61,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
     ImageView imgViewCamera;
     Toolbar myToolbar;
     Spinner mySpinner;
+    private long backPressedTime = 0;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -73,7 +74,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
                     break;
                 case R.id.navigation_collage:
                    // mTextMessage.setText(R.string.title_dashboard);
-                    finish();
+                    //finish();
                     Intent i = new Intent(DisplayImagesGalleryActivity.this, DisplayImagesCollageActivity.class);
                    //i.setFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
                    startActivity(i);
@@ -382,89 +383,30 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.sortMenu:{
-                listitems = new String[]{"All","Top","Bottom","Jacket","Shoes","Accesories"};
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DisplayImagesGalleryActivity.this);
-                mBuilder.setTitle("Sort By :");
-                mBuilder.setIcon(R.drawable.icon);
-                mBuilder.setSingleChoiceItems(listitems, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        btnSort.setText("Sort By : " +listitems[i]);
-                        dialogInterface.dismiss();
-                        String item = listitems[i].toString();
-
-                        if(listitems[i] == "All"){
-                            mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-
-                                    list.clear();
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
-                                        imageUploadInfo.setKey(postSnapshot.getKey());
-                                        list.add(imageUploadInfo);
-                                    }
-                                    adapter.notifyDataSetChanged();
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-                                }
-
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-
-                                }
-                            });
-
-                        }
-
-                        else {
-
-                            Query query = databaseReference.orderByChild("category").equalTo(listitems[i]);
-                            // Adding Add Value Event Listener to databaseReference.
-                            mDBListener = query.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot snapshot) {
-
-                                    list.clear();
-                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
-                                        ImageUploadAttributes imageUploadInfo = postSnapshot.getValue(ImageUploadAttributes.class);
-                                        imageUploadInfo.setKey(postSnapshot.getKey());
-                                        list.add(imageUploadInfo);
-                                    }
-                                    adapter.notifyDataSetChanged();
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-                                }
-
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                    // Hiding the progress dialog.
-                                    progressDialog.dismiss();
-
-                                }
-                            });
-
-
-                        }
-                    }
-                });
+            case R.id.AddMenu:{
+                Intent i = new Intent(DisplayImagesGalleryActivity.this, GalleryActivity.class);
+                startActivity(i);
                 break;
             }
+            case R.id.sortMenu1:{
+                Intent i = new Intent(DisplayImagesGalleryActivity.this, SecondActivity.class);
+                startActivity(i);
+                break;
+            }
+
+
             case R.id.profileMenu:
                 startActivity(new Intent(DisplayImagesGalleryActivity.this, ProfileActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onBackPressed() {        // to prevent irritating accidental logouts
+        startActivity(new Intent(DisplayImagesGalleryActivity.this, SecondActivity.class));
+            super.onBackPressed();       // bye
+        }
 
 
 

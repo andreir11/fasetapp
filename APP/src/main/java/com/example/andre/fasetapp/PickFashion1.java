@@ -248,11 +248,44 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
 
     @Override
     public void onItemClick(int position) {
+        ImageUploadAttributes selectedItem = list.get(position);
+        final String selectedKey = selectedItem.getKey();
 
+        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
+        String categoryHolder = selectedItem.getcategory();
 
+        if(categoryHolder.equalsIgnoreCase("Top")){
+            Glide.with(this)
+                    .load(selectedItem.getImageURL())
+                    .into(imgChoose1);
+            Toast.makeText(this, "You had put " +selectedItem.getname()+ " On " + categoryHolder, Toast.LENGTH_SHORT).show();
+        }
 
+        if(categoryHolder.equalsIgnoreCase("Bottom")){
+            Glide.with(this)
+                    .load(selectedItem.getImageURL())
+                    .into(imgChoose);
+            Toast.makeText(this, "You had put " +selectedItem.getname()+ " On " + categoryHolder, Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(this, "Normal click at position: " + position, Toast.LENGTH_SHORT).show();
+        if(categoryHolder.equalsIgnoreCase("Jacket")){
+            Glide.with(this)
+                    .load(selectedItem.getImageURL())
+                    .into(imgChoose2);
+            Toast.makeText(this, "You had put " +selectedItem.getname()+ " On " + categoryHolder, Toast.LENGTH_SHORT).show();
+        }
+        if(categoryHolder.equalsIgnoreCase("Shoes")){
+            Glide.with(this)
+                    .load(selectedItem.getImageURL())
+                    .into(imgChoose3);
+            Toast.makeText(this, "You had put " +selectedItem.getname()+ " On " + categoryHolder, Toast.LENGTH_SHORT).show();
+        }
+        if(categoryHolder.equalsIgnoreCase("Accesories")){
+            Glide.with(this)
+                    .load(selectedItem.getImageURL())
+                    .into(imgChoose4);
+            Toast.makeText(this, "You had put " +selectedItem.getname()+ " On " + categoryHolder, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

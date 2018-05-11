@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -81,7 +82,7 @@ public class EmptyActivity1 extends AppCompatActivity {
         buttonCollege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                validate();
                 // Calling method to upload selected image on Firebase storage.
                 UploadImageFileToFirebaseStorage();
 
@@ -106,7 +107,7 @@ public class EmptyActivity1 extends AppCompatActivity {
     public void UploadImageFileToFirebaseStorage() {
 
         // Checking whether FilePathUri Is empty or not.
-        if (imageUriOfPage != null) {
+        if (imageUriOfPage != null && validate()) {
            //Toast.makeText(EmptyActivity.this, "ada", Toast.LENGTH_LONG).show();
             final ProgressDialog progressDialog = new ProgressDialog(this);
             progressDialog.setTitle("Uploading...");
@@ -123,6 +124,8 @@ public class EmptyActivity1 extends AppCompatActivity {
                             String date2 = "Apr 2 2018";
                             // Hiding the progressDialog after done uploading.
                             progressDialog.dismiss();
+
+
 
                             // Showing toast message after done uploading.
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
@@ -171,7 +174,40 @@ public class EmptyActivity1 extends AppCompatActivity {
 
         }
     }
+    private Boolean validate(){
+        Boolean result = false;
 
+        String CheckName = CollectionName.getText().toString();
+
+
+
+        /*String passwordHandler = password.getText().toString();
+        if (password.isEmpty() || password.length() < 6) {  passwordText.setError("Password cannot be less than 6 characters!");
+        }
+        else {
+            passwordText.setError(null);
+            startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+        }*/
+        if(TextUtils.isEmpty(CheckName)){
+            CollectionName.setError("The item cannot be empty");
+        }
+
+
+
+
+
+
+
+//isEmpty() || password.isEmpty() || email.isEmpty() || age.isEmpty() || imagePath != null
+
+
+
+        else{
+            result = true;
+        }
+
+        return result;
+    }
 
 
 

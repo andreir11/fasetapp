@@ -11,19 +11,6 @@
         >
     </item>
 
-    <item
-        android:id="@+id/sortMenu1"
-        android:orderInCategory="100"
-        app:showAsAction="never"
-        android:title="Sort">
-    </item>
-
-    <item
-        android:id="@+id/profileMenu"
-        android:orderInCategory="200"
-        app:showAsAction="never"
-        android:title="Profile">
-    </item>
 
 
 

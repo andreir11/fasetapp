@@ -23,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -133,6 +135,41 @@ public class GalleryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 ImageName.setOnEditorActionListener(new DoneOnEditorActionListener());
+                FirebaseDatabase firebaseDatabaseCheck = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = firebaseDatabaseCheck.getReference("users");
+
+                //myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userInfo").child("userName").setValue("test");
+
+                //Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").orderByChild("imageName").equalTo("upup");
+                final String aa = ImageName.getText().toString().trim();
+                Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").orderByChild("name").orderByValue().equalTo(aa);
+
+
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //imageD.setImageResource(0);
+                        for (DataSnapshot singleSnapshot : dataSnapshot.getChildren()) {
+
+                            if (singleSnapshot != null) {
+
+                                Toast.makeText(GalleryActivity.this, "Name already exist", Toast.LENGTH_LONG).show();
+                                //ImageName.setError("[Unique]Name already exist");
+
+
+                            }
+                        }
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+
+                    }
+                });
+
+
             }
         });
 
@@ -657,6 +694,9 @@ public class GalleryActivity extends AppCompatActivity {
             passwordText.setError(null);
             startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
         }*/
+        if(SelectImage.getDrawable() == null){
+            Toast.makeText(GalleryActivity.this, "You Haven't Selected An Image", Toast.LENGTH_LONG).show();
+        }
         if(TextUtils.isEmpty(CheckName)){
             ImageName.setError("The item cannot be empty");
         }
@@ -762,7 +802,7 @@ public class GalleryActivity extends AppCompatActivity {
     public void UploadImageFileToFirebaseStorage() {
 
         // Checking whether FilePathUri Is empty or not.
-        if (FilePathUri != null) {
+        if (FilePathUri != null && validate()) {
 
             // Setting progressDialog Title.
             progressDialog.setTitle("Image is Uploading...");
@@ -798,6 +838,9 @@ public class GalleryActivity extends AppCompatActivity {
 
                 }
             });*/
+
+
+
             // Creating second StorageReference.
            final String ImageUploadId = databaseReference.push().getKey();
             StorageReference storageReference2nd = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path).child(ImageUploadId).child(ImageName.getText().toString()+ "." + GetFileExtension(FilePathUri));

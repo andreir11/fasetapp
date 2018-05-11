@@ -59,6 +59,11 @@ public class UpdateCollageDetail extends AppCompatActivity {
     public static final String Database_Path = "All_Image_Uploads_Database";
     ProgressDialog progressDialog ;
     String imgId, imgLink, imgName;
+    private String sameDate, sameLink,sameId;
+    private FirebaseDatabase firebaseDatabase;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,18 +105,80 @@ public class UpdateCollageDetail extends AppCompatActivity {
                 .into(view);
         CollectionName.setText(imgName);
 
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        final DatabaseReference databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getUid()).child("userCollage").child(imgId);
+
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                ImageUploadInfo updateAttr = dataSnapshot.getValue(ImageUploadInfo.class);
+                CollectionName.setText(updateAttr.getImageName());
+
+
+                sameDate = updateAttr.getDate().toString();
+                sameLink = updateAttr.getImageURL().toString();
+                sameId = updateAttr.getid().toString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(UpdateCollageDetail.this, databaseError.getCode(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+
         buttonCollege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 // Calling method to upload selected image on Firebase storage.
-                UploadImageFileToFirebaseStorage();
+                //UploadImageFileToFirebaseStorage();
+                String nameUpdate = CollectionName.getText().toString();
+
+
+                validate();
+
+                ImageUploadInfo userProfile = new ImageUploadInfo(sameId, nameUpdate , sameLink, sameDate);
+
+                databaseReference.setValue(userProfile);
+
+                finish();
 
             }
         });
 
 
         //text.setText(Intent.EXTRA_STREAM);
+    }
+
+    private Boolean validate(){
+        Boolean result = false;
+
+        String CheckName = CollectionName.getText().toString();
+
+
+
+        /*String passwordHandler = password.getText().toString();
+        if (password.isEmpty() || password.length() < 6) {  passwordText.setError("Password cannot be less than 6 characters!");
+        }
+        else {
+            passwordText.setError(null);
+            startActivity(new Intent(RegistrationActivity.this,MainActivity.class));
+        }*/
+        if(TextUtils.isEmpty(CheckName)){
+            CollectionName.setError("The item cannot be empty");
+        }
+
+
+
+        else{
+            result = true;
+        }
+
+        return result;
     }
 
     public String GetFileExtension(Uri uri) {
@@ -125,6 +192,7 @@ public class UpdateCollageDetail extends AppCompatActivity {
 
     }
 
+    /*
     public void UploadImageFileToFirebaseStorage() {
 
         // Checking whether FilePathUri Is empty or not.
@@ -191,8 +259,7 @@ public class UpdateCollageDetail extends AppCompatActivity {
 
             Toast.makeText(UpdateCollageDetail.this, "ga ada", Toast.LENGTH_LONG).show();
 
-        }
+        }*/
     }
 
 
-}

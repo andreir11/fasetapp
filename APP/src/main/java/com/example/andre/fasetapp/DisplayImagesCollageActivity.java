@@ -271,7 +271,7 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menudiga, menu);
+        getMenuInflater().inflate(R.menu.menudica, menu);
         return true;
     }
 
@@ -279,8 +279,8 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.sortMenu:{
-
+            case R.id.AddMenu:{
+                startActivity(new Intent(DisplayImagesCollageActivity.this, PickFashion.class));
                 break;
             }
             case R.id.profileMenu:

@@ -6,29 +6,15 @@
     android:layout_height="match_parent"
     tools:context="com.example.andre.fasetapp.EmptyActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Bello!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView81"
-        app:layout_constraintVertical_bias="0.0" />
+
 
     <ImageView
         android:id="@+id/imageView81"
-        android:layout_width="321dp"
-        android:layout_height="277dp"
+        android:layout_width="364dp"
+        android:layout_height="403dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,21 +23,21 @@
     <EditText
         android:id="@+id/CollectionNameText"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="48dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
         android:gravity="center"
         android:hint="Give This Outfit A Name"
-        android:singleLine="true"
         android:imeOptions="actionDone"
+        android:singleLine="true"
         app:layout_constraintTop_toBottomOf="@+id/imageView81"
-        tools:layout_editor_absoluteX="0dp"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/buttonCl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="44dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -59,5 +45,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CollectionNameText" />
+        app:layout_constraintTop_toBottomOf="@+id/CollectionNameText"
+        app:layout_constraintVertical_bias="0.619" />
 </android.support.constraint.ConstraintLayout>

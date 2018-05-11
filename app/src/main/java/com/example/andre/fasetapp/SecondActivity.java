@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +33,7 @@ public class SecondActivity extends AppCompatActivity {
     private FirebaseDatabase mFirebaseInstance;
     private ImageView imgchoose;
 
-
+    private long backPressedTime = 0;
     private Button logout;
 
 
@@ -79,7 +80,7 @@ public class SecondActivity extends AppCompatActivity {
         //user.setUserId(userIdString);
         //String idOfUser=user.getUserId();
         //textViewUserId.setText(firebaseAuth.getCurrentUser().getUid());
-
+        String idFdb = firebaseAuth.getCurrentUser().getUid();
 
         calendar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,13 +146,13 @@ public class SecondActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch(item.getItemId()){
-            case R.id.logoutMenu:{
+            /*case R.id.logoutMenu:{
                 Logout();
                 break;
                 /*firebaseAuth.signOut();
                 finish();
-                startActivity(new Intent(SecondActivity.this, MainActivity.class));*/
-            }
+                startActivity(new Intent(SecondActivity.this, MainActivity.class));
+            }*/
             case R.id.profileMenu:
                 startActivity(new Intent(SecondActivity.this, ProfileActivity.class));
                 break;
@@ -175,4 +176,20 @@ public class SecondActivity extends AppCompatActivity {
         startActivity(it);
 
     }
+
+    @Override
+    public void onBackPressed() {        // to prevent irritating accidental logouts
+        long t = System.currentTimeMillis();
+        if (t - backPressedTime > 2000) {    // 2 secs
+            backPressedTime = t;
+            Toast.makeText(this, "Press back again to exit",
+                    Toast.LENGTH_SHORT).show();
+        } else {    // this guy is serious
+            // clean up
+            super.onBackPressed();       // bye
+        }
+    }
+
+
+
 }
