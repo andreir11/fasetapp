@@ -96,7 +96,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         getSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Clothes");
+        getSupportActionBar().setTitle("Wardrobe");
 
         //img = (ImageView)findViewById(R.id.imageView4) ;
         //img1 = (ImageView)findViewById(R.id.imageView6) ;
@@ -385,19 +385,12 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
         switch(item.getItemId()){
             case R.id.AddMenu:{
                 Intent i = new Intent(DisplayImagesGalleryActivity.this, GalleryActivity.class);
-                startActivity(i);
-                break;
-            }
-            case R.id.sortMenu1:{
-                Intent i = new Intent(DisplayImagesGalleryActivity.this, SecondActivity.class);
+                i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 break;
             }
 
 
-            case R.id.profileMenu:
-                startActivity(new Intent(DisplayImagesGalleryActivity.this, ProfileActivity.class));
-                break;
         }
         return super.onOptionsItemSelected(item);
     }

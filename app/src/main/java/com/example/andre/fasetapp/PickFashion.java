@@ -144,7 +144,7 @@ public class PickFashion extends AppCompatActivity implements RecyclerViewAdapte
         progressDialog = new ProgressDialog(PickFashion.this);
 
         // Setting up message in Progress dialog.
-        progressDialog.setMessage("Loading Images From Firebase.");
+        progressDialog.setMessage("Loading Images...");
 
         // Showing progress dialog.
         progressDialog.show();

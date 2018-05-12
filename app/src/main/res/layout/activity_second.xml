@@ -7,26 +7,6 @@
     tools:context="com.example.andre.fasetapp.SecondActivity"
     tools:layout_editor_absoluteY="81dp">
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/buttonSorting"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="192dp"
-        android:layout_marginTop="8dp"
-        android:clickable="true"
-        android:onClick="runQrcode"
-        android:visibility="visible"
-        app:backgroundTint="@android:color/holo_orange_light"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/barcode" />
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -66,60 +46,51 @@
         android:id="@+id/clothecabinet"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="68dp"
-        android:onClick="runQrcode"
+        android:layout_marginBottom="116dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/barcode"
-        app:layout_constraintEnd_toStartOf="@+id/buttonAddCustomize"
+        android:onClick="runQrcode"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        />
+        app:layout_constraintTop_toBottomOf="@+id/editText"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/editText"
         android:layout_width="134dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="新增自己衣服"
+        android:text="衣服管理"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
         app:layout_constraintEnd_toStartOf="@+id/clothetxt"
-        app:layout_constraintHorizontal_bias="0.207"
+        app:layout_constraintHorizontal_bias="0.246"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/clothecabinet"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/button7" />
 
     <Button
         android:id="@+id/buttonAddCustomize"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginBottom="51dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="40dp"
         android:layout_marginRight="16dp"
-        android:layout_marginStart="50dp"
         android:layout_marginTop="68dp"
         android:background="@drawable/reeeee"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/clothecabinet"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/clothetxt"
         android:layout_width="83dp"
         android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="44dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -127,20 +98,18 @@
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/button7"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAddCustomize"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddCustomize" />
 
     <Button
         android:id="@+id/button7"
         android:layout_width="130dp"
         android:layout_height="130dp"
-        android:layout_marginBottom="116dp"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="68dp"
         android:background="@drawable/sssssssss"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button8"
@@ -149,19 +118,22 @@
         android:layout_marginBottom="116dp"
         android:layout_marginEnd="20dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:background="@drawable/calendar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.923"
+        app:layout_constraintHorizontal_bias="0.656"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button7" />
+        app:layout_constraintStart_toEndOf="@+id/button7"
+        app:layout_constraintTop_toBottomOf="@+id/clothetxt"
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/newcloth"
         android:layout_width="127dp"
         android:layout_height="44dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginRight="36dp"
+        android:layout_marginRight="52dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -171,27 +143,24 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button7"
+        app:layout_constraintTop_toBottomOf="@+id/button8"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/newcloth2"
-        android:layout_width="122dp"
+        android:layout_width="126dp"
         android:layout_height="44dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginBottom="64dp"
+        android:layout_marginEnd="20dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="衣服管理"
+        android:text="Scan Barcode"
         android:textAlignment="center"
         android:textColor="#000"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/newcloth"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button7"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintLeft_toLeftOf="parent" />
 
     <Button
         android:id="@+id/btnGallery"

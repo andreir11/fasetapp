@@ -11,6 +11,7 @@ public class ImageUploadInfo {
     public String id;
     public String date;
     public String imageURL;
+    public String category;
     private String mKey;
 
 
@@ -18,11 +19,12 @@ public class ImageUploadInfo {
 
     }
 
-    public ImageUploadInfo(String id, String name, String url, String date) {
+    public ImageUploadInfo(String id, String name, String url, String date, String category) {
         this.id = id;
         this.imageName = name;
         this.imageURL= url;
         this.date=date;
+        this.category=category;
     }
     public String getDate() {
         return date;
@@ -38,6 +40,10 @@ public class ImageUploadInfo {
 
     public String getImageURL() {
         return imageURL;
+    }
+
+    public String getcategory() {
+        return category;
     }
 
     @Exclude

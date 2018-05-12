@@ -28,17 +28,24 @@ public class QRcode extends AppCompatActivity {
 
         setContentView(zXingScannerView);
         zXingScannerView.startCamera();
+
     }
     public void save(View view)
     {
         Intent it=new Intent(QRcode.this,save.class);//CALL Saved Class
+
+
+
+
+
         it.putExtra("ID",str);//input value
         it.putExtra("userid",userID);
         startActivity(it);
     }
     public void cancel(View view)
     {
-        Intent it=new Intent(QRcode.this,VirturalCabinet.class);
+        Intent it=new Intent(QRcode.this,SecondActivity.class);
+        it.setFlags(it.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
     }
     protected void onPause() {
@@ -55,6 +62,12 @@ public class QRcode extends AppCompatActivity {
             zXingScannerView.stopCamera();
             btn2 = (Button) findViewById(R.id.button2);
             btn3 = (Button) findViewById(R.id.button3);
+
+
+            /*Intent it=new Intent(QRcode.this,save.class);//CALL Saved Class
+            it.putExtra("ID",str);//input value
+            it.putExtra("userid",userID);
+            startActivity(it);*/
 
         }
     }

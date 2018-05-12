@@ -91,7 +91,7 @@ class RecyclerViewwAdapterrr extends RecyclerView.Adapter<RecyclerViewwAdapterrr
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Select Action");
-            MenuItem doWhatever = menu.add(Menu.NONE, 1, 1, "Add");
+            MenuItem doWhatever = menu.add(Menu.NONE, 1, 1, "Edit");
             MenuItem delete = menu.add(Menu.NONE, 2, 2, "Delete");
 
 

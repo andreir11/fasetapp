@@ -20,13 +20,13 @@
                 android:id="@+id/textview1"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:gravity="fill_horizontal|center|fill"
-                android:text="Choose Image To Upload"
                 android:layout_marginTop="20dp"
-                android:textSize="20dp"
-                android:textStyle="bold"
                 android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:focusableInTouchMode="true"
+                android:gravity="fill_horizontal|center|fill"
+                android:text="Edit Gallery"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="fill_parent"
@@ -50,12 +50,13 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImageNameEditTextUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_class_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Name"
@@ -70,12 +71,13 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImageCategoryEditTextUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_adjust_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Category"
@@ -94,7 +96,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_texture_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Sleeves/Length"
@@ -108,12 +110,13 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImageBrandEditTextUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_stars_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Brand"
@@ -129,17 +132,18 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImagePriceEditTextUpdate"
-                    android:inputType="number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_attach_money_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Price"
                     android:imeOptions="actionDone"
+                    android:inputType="number"
                     android:selectAllOnFocus="false"
                     android:singleLine="false" />
             </android.support.design.widget.TextInputLayout>
@@ -150,12 +154,13 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImageSeasonEditTextUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_looks_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Season"
@@ -168,12 +173,13 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImageTagEditTextUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_local_offer_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Tag"
@@ -186,16 +192,17 @@
                 android:layout_height = "wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent">
+
                 <EditText
                     android:id="@+id/ImageSizeEditTextUpdate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:imeOptions="actionDone"
-                    android:drawableLeft="@drawable/icon"
+                    android:drawableLeft="@drawable/baseline_details_black_18dp"
                     android:drawablePadding="2dp"
                     android:gravity="center_horizontal|center|start"
                     android:hint="Size"
+                    android:imeOptions="actionDone"
                     android:selectAllOnFocus="false"
                     android:singleLine="true" />
             </android.support.design.widget.TextInputLayout>
@@ -205,6 +212,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ImageNameEditTextUpdate"
+                android:backgroundTintMode="add"
                 android:layout_marginTop="20dp"
                 android:selectAllOnFocus="false"
                 android:text="Confirm" />

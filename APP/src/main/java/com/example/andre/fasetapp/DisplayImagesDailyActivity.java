@@ -15,6 +15,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -73,26 +75,16 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_images_daily);
-        buttonToPick = (Button)findViewById(R.id.buttonToP);
+        //buttonToPick = (Button)findViewById(R.id.buttonToP);
         img = (ImageView)findViewById(R.id.imageViewInvisible) ;
 
-
+        getSupportActionBar().setTitle("Choose Outfit");
         Intent intent = getIntent();
         date = intent.getStringExtra("CatchDate");
 
         tx = (TextView)findViewById(R.id.textView6) ;
-        tx.setText(date);
+        //tx.setText(date);
 
-        buttonToPick.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent i = new Intent(DisplayImagesDailyActivity.this, PickFashion1.class);
-                i.putExtra("Catch",date);
-                //finish();
-                startActivity(i);
-            }
-        });
 
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -112,7 +104,7 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         progressDialog = new ProgressDialog(DisplayImagesDailyActivity.this);
 
         // Setting up message in Progress dialog.
-        progressDialog.setMessage("Loading Images From Firebase.");
+        progressDialog.setMessage("Loading Images...");
 
         // Showing progress dialog.
         progressDialog.show();
@@ -408,7 +400,29 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         databaseReference.removeEventListener(mDBListener);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menudida, menu);
+        return true;
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.AddMenu:{
+                Intent i = new Intent(DisplayImagesDailyActivity.this, PickFashion1.class);
+                i.putExtra("Catch",date);
+                //finish();
+                startActivity(i);
+                break;
+            }
+
+
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 
 

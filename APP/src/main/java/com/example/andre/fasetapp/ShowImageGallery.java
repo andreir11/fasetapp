@@ -3,6 +3,7 @@ package com.example.andre.fasetapp;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -11,12 +12,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 public class ShowImageGallery extends AppCompatActivity {
 
@@ -31,7 +35,8 @@ public class ShowImageGallery extends AppCompatActivity {
     String imgId;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase firebaseDatabase;
-
+    DatabaseReference databaseRef, databaseReference;
+    private FirebaseStorage mStorage;
 
     Button editAttr;
     @Override
@@ -62,7 +67,8 @@ public class ShowImageGallery extends AppCompatActivity {
         clothPrice = intent.getStringExtra("price");
         dateInsert = intent.getStringExtra("date");
 
-
+        mStorage = FirebaseStorage.getInstance();
+        //databaseRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userCollage");
         Glide.with(this)
                 .load(imgLink)
                 .into(imgContainer);
@@ -79,7 +85,7 @@ public class ShowImageGallery extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -114,12 +120,29 @@ public class ShowImageGallery extends AppCompatActivity {
 
 
 
-    }   @Override
+    }  @Override
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.showimage, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
+        switch(item.getItemId()){
+            case R.id.AddMenu:{
+                Intent i = new Intent(ShowImageGallery.this, UpdateProfileFashionDetail.class);
+                i.putExtra("imageId", imgId);
+                i.putExtra("imageUrl", imgLink);
+                //i.setFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(i);
+                break;
+            }
+
+
+
+
         }
         return super.onOptionsItemSelected(item);
     }

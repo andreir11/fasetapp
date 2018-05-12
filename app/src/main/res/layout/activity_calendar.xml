@@ -21,11 +21,10 @@
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendarView"
-        android:layout_width="360dp"
-        android:layout_height="340dp"
+        android:layout_width="355dp"
+        android:layout_height="275dp"
         android:layout_below="@+id/textviewSubTitle"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
         app:mcv_selectionColor="#00F"
         app:mcv_showOtherDates="all" />
 
@@ -43,12 +42,11 @@
 
     <ImageView
         android:id="@+id/imageDaily"
-        android:layout_width="120dp"
+        android:layout_width="155dp"
         android:layout_height="120dp"
-        android:layout_below="@+id/textView4"
-        android:layout_marginEnd="34dp"
-        android:layout_marginTop="13dp"
-        android:layout_toStartOf="@+id/buttonToDelete"
+        android:layout_alignEnd="@+id/buttonToSelectCollection"
+        android:layout_below="@+id/weath"
+        android:layout_marginEnd="22dp"
         app:srcCompat="@color/white" />
 
     <Button
@@ -68,7 +66,8 @@
         android:layout_marginEnd="16dp"
         android:layout_toStartOf="@+id/buttonToSelectCollection"
         android:text="Del"
-        android:textSize="10sp" />
+        android:textSize="10sp"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/bottomBar"
@@ -94,5 +93,31 @@
 
         </android.support.design.widget.BottomNavigationView>
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/weath"
+        android:layout_width="223dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView4"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/weatherImage"
+        android:layout_width="47dp"
+        android:layout_height="41dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/weath"
+        android:layout_marginStart="69dp"
+        />
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/weath"
+        android:text="天氣:"
+        android:textSize="24sp" />
 
 </RelativeLayout>

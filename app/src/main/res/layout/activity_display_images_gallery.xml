@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/navigation"
         android:layout_alignParentStart="true"
+        android:backgroundTintMode="add"
         android:text="Sort by : All" />
 
     <Button

@@ -93,7 +93,7 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         getSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Collages");
+        getSupportActionBar().setTitle("Wardrobe");
 
         //img = (ImageView)findViewById(R.id.imageView4) ;
         //img1 = (ImageView)findViewById(R.id.imageView6) ;
@@ -115,7 +115,7 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
         progressDialog = new ProgressDialog(DisplayImagesCollageActivity.this);
 
         // Setting up message in Progress dialog.
-        progressDialog.setMessage("Loading Images From Firebase.");
+        progressDialog.setMessage("Loading Images...");
 
         // Showing progress dialog.
         progressDialog.show();
@@ -135,6 +135,101 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userCollage");
+
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                listitems = new String[]{"All","Casual",
+                        "Party",
+                        "Formal",
+                        "Comfy",
+                        "Sport"};
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DisplayImagesCollageActivity.this);
+                mBuilder.setTitle("Sort By :");
+                mBuilder.setIcon(R.drawable.icon);
+                mBuilder.setSingleChoiceItems(listitems, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        btnSort.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        String item = listitems[i].toString();
+
+                        if(listitems[i] == "All"){
+                            mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+
+                                    list.clear();
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                                        imageUploadInfo.setKey(postSnapshot.getKey());
+                                        list.add(imageUploadInfo);
+                                    }
+                                    adapter.notifyDataSetChanged();
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+
+                                }
+                            });
+
+                        }
+
+                        else {
+
+                            Query query = databaseReference.orderByChild("category").equalTo(listitems[i]);
+                            // Adding Add Value Event Listener to databaseReference.
+                            mDBListener = query.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+
+                                    list.clear();
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                                        imageUploadInfo.setKey(postSnapshot.getKey());
+                                        list.add(imageUploadInfo);
+                                    }
+                                    adapter.notifyDataSetChanged();
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+
+                                }
+                            });
+
+
+                        }
+                    }
+                });
+                mBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
+
 
         // Adding Add Value Event Listener to databaseReference.
         mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
@@ -200,6 +295,7 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
         i.putExtra("imgId", selectedItem.getid());
         i.putExtra("link", selectedItem.getImageURL());
         i.putExtra("date", selectedItem.getDate());
+
        /* i.putExtra("imgId", selectedItem.getid());
         i.putExtra("link", selectedItem.getImageURL());
         i.putExtra("alias", selectedItem.getname());
@@ -283,13 +379,15 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
                 startActivity(new Intent(DisplayImagesCollageActivity.this, PickFashion.class));
                 break;
             }
-            case R.id.profileMenu:
-                startActivity(new Intent(DisplayImagesCollageActivity.this, ProfileActivity.class));
-                break;
+
         }
         return super.onOptionsItemSelected(item);
     }
 
-
+    @Override
+    public void onBackPressed() {        // to prevent irritating accidental logouts
+        startActivity(new Intent(DisplayImagesCollageActivity.this, SecondActivity.class));
+        super.onBackPressed();       // bye
+    }
 
 }

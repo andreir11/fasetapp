@@ -6,8 +6,8 @@
         android:id="@+id/AddMenu"
         android:orderInCategory="400"
         app:showAsAction="always"
-        android:title="Add"
-        android:icon="@drawable/ic_add_white_24dp"
+        android:title="+Add"
+
         >
     </item>
 

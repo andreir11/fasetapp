@@ -51,8 +51,8 @@ public class UpdateCollageDetail extends AppCompatActivity {
     StorageReference storageReference;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
-    EditText CollectionName;
-    private String formattedDate;
+    EditText CollectionName, ImageCategory;
+    private String formattedDate, categoryHolder;
     String Storage_Path = "Collection_Image_Uploads/";
     private String dateOfDate;
     // Root Database Name for Firebase Database.
@@ -82,6 +82,7 @@ public class UpdateCollageDetail extends AppCompatActivity {
         TextView text = (TextView) findViewById(R.id.textView2);
         buttonCollege = (Button) findViewById(R.id.buttonCl);
         CollectionName = (EditText) findViewById(R.id.CollectionNameText);
+        ImageCategory = (EditText) findViewById(R.id.ImageCategoryEditText);
         progressDialog = new ProgressDialog(UpdateCollageDetail.this);
 
         //dateOfDate = getIntent().getStringExtra("CatchDate");
@@ -114,7 +115,7 @@ public class UpdateCollageDetail extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ImageUploadInfo updateAttr = dataSnapshot.getValue(ImageUploadInfo.class);
                 CollectionName.setText(updateAttr.getImageName());
-
+                ImageCategory.setText(updateAttr.getcategory());
 
                 sameDate = updateAttr.getDate().toString();
                 sameLink = updateAttr.getImageURL().toString();
@@ -127,7 +128,71 @@ public class UpdateCollageDetail extends AppCompatActivity {
             }
         });
 
+        ImageCategory.setFocusable(false);
+        ImageCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] category = new String[]{
+                        "Casual",
+                        "Party",
+                        "Formal",
+                        "Comfy",
+                        "Sport"
+                };
 
+                // Boolean array for initial selected items
+
+                final List<String> categoryList = Arrays.asList(category);
+
+                //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
+                AlertDialog.Builder builder = new AlertDialog.Builder(UpdateCollageDetail.this);
+
+                builder.setIcon(R.drawable.icon);
+                // Set a title for alert dialog
+                builder.setTitle("Category");
+
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(CollectionName.getWindowToken(), 0);
+
+
+                builder.setSingleChoiceItems(category, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ImageTag.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        categoryHolder = category[i].toString();
+                        ImageCategory.setText(categoryHolder);
+
+
+
+                    }
+                });
+
+                /*
+                // Set the negative/no button click listener
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the negative button
+                    }
+                });*/
+
+                // Set the neutral/cancel button click listener
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the neutral button
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+                dialog.show();
+
+
+            }
+
+        });
 
 
         buttonCollege.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +206,7 @@ public class UpdateCollageDetail extends AppCompatActivity {
 
                 validate();
 
-                ImageUploadInfo userProfile = new ImageUploadInfo(sameId, nameUpdate , sameLink, sameDate);
+                ImageUploadInfo userProfile = new ImageUploadInfo(sameId, nameUpdate , sameLink, sameDate,categoryHolder);
 
                 databaseReference.setValue(userProfile);
 

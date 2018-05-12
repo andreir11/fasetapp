@@ -1,7 +1,10 @@
 package com.example.andre.fasetapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,8 +31,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class EmptyActivity1 extends AppCompatActivity {
 
@@ -37,11 +43,11 @@ public class EmptyActivity1 extends AppCompatActivity {
     StorageReference storageReference;
     DatabaseReference databaseReference;
     FirebaseAuth firebaseAuth;
-    EditText CollectionName;
+    EditText CollectionName, ImageCategory;
     private String formattedDate;
 
     String Storage_Path = "Collection_Image_Uploads/";
-    private String dateOfDate;
+    private String dateOfDate, categoryHolder;
     // Root Database Name for Firebase Database.
     public static final String Database_Path = "All_Image_Uploads_Database";
     ProgressDialog progressDialog ;
@@ -62,6 +68,7 @@ public class EmptyActivity1 extends AppCompatActivity {
         TextView text = (TextView) findViewById(R.id.textView2);
         buttonCollege = (Button) findViewById(R.id.buttonCl);
         CollectionName = (EditText) findViewById(R.id.CollectionNameText);
+        ImageCategory = (EditText) findViewById(R.id.ImageCategoryEditText);
         progressDialog = new ProgressDialog(EmptyActivity1.this);
 
         dateOfDate = getIntent().getStringExtra("CatchDate");
@@ -79,6 +86,15 @@ public class EmptyActivity1 extends AppCompatActivity {
         SimpleDateFormat df = new SimpleDateFormat("MMMM dd, yyyy");
         formattedDate = df.format(c);
 
+        CollectionName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CollectionName.setOnEditorActionListener(new DoneOnEditorActionListener());
+
+            }
+        });
+
+
         buttonCollege.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,6 +105,71 @@ public class EmptyActivity1 extends AppCompatActivity {
             }
         });
 
+        ImageCategory.setFocusable(false);
+        ImageCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] category = new String[]{
+                        "Casual",
+                        "Party",
+                        "Formal",
+                        "Comfy",
+                        "Sport"
+                };
+
+                // Boolean array for initial selected items
+
+                final List<String> categoryList = Arrays.asList(category);
+
+                //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
+                AlertDialog.Builder builder = new AlertDialog.Builder(EmptyActivity1.this);
+
+                builder.setIcon(R.drawable.icon);
+                // Set a title for alert dialog
+                builder.setTitle("Category");
+
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(CollectionName.getWindowToken(), 0);
+
+
+                builder.setSingleChoiceItems(category, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ImageTag.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        categoryHolder = category[i].toString();
+                        ImageCategory.setText(categoryHolder);
+
+
+
+                    }
+                });
+
+                /*
+                // Set the negative/no button click listener
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the negative button
+                    }
+                });*/
+
+                // Set the neutral/cancel button click listener
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the neutral button
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+                dialog.show();
+
+
+            }
+
+        });
 
         //text.setText(Intent.EXTRA_STREAM);
     }
@@ -131,7 +212,7 @@ public class EmptyActivity1 extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             String ImageUploadId = databaseReference.push().getKey();
                             @SuppressWarnings("VisibleForTests")
-                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName,taskSnapshot.getDownloadUrl().toString(),formattedDate);
+                            ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName,taskSnapshot.getDownloadUrl().toString(),formattedDate,categoryHolder);
 
                             // Getting image upload ID.
 
@@ -140,8 +221,9 @@ public class EmptyActivity1 extends AppCompatActivity {
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userCollage").child(ImageUploadId).setValue(imageUploadInfo);
 
                             //finish();
-                            Intent i = new Intent(EmptyActivity1.this, SecondActivity.class);
-                            i.addFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
+                            Intent i = new Intent(EmptyActivity1.this, DisplayImagesCollageActivity.class);
+                            finish();
+                            i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(i);
                             //startActivity(new Intent(EmptyActivity1.this, CalendarActivity.class));
 
@@ -170,7 +252,7 @@ public class EmptyActivity1 extends AppCompatActivity {
 
         else {
 
-            Toast.makeText(EmptyActivity1.this, "ga ada", Toast.LENGTH_LONG).show();
+            Toast.makeText(EmptyActivity1.this, "Give an initial/name to your outfit", Toast.LENGTH_LONG).show();
 
         }
     }

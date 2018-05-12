@@ -142,7 +142,7 @@ public class GalleryActivity extends AppCompatActivity {
 
                 //Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").orderByChild("imageName").equalTo("upup");
                 final String aa = ImageName.getText().toString().trim();
-                Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").orderByChild("name").orderByValue().equalTo(aa);
+                Query query = myRef.child(firebaseAuth.getCurrentUser().getUid()).child("userDailyWear").orderByChild("imageDailyD").equalTo("May 27, 2018");
 
 
                 query.addValueEventListener(new ValueEventListener() {
@@ -165,7 +165,7 @@ public class GalleryActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
-
+                        Toast.makeText(GalleryActivity.this, "Name not exist", Toast.LENGTH_LONG).show();
                     }
                 });
 
@@ -875,7 +875,7 @@ public class GalleryActivity extends AppCompatActivity {
 
                             // Adding image upload id s child element into databaseReference.
                             databaseReference.child(firebaseAuth.getCurrentUser().getUid()).child("userGallery").child(ImageUploadId).setValue(imageUploadInfo);
-                            Intent i = new Intent(GalleryActivity.this, SecondActivity.class);
+                            Intent i = new Intent(GalleryActivity.this, DisplayImagesGalleryActivity.class);
 
                             //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             i.setFlags(i.FLAG_ACTIVITY_NEW_TASK | i.FLAG_ACTIVITY_CLEAR_TASK);

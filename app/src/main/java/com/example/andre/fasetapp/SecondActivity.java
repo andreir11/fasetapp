@@ -110,6 +110,11 @@ public class SecondActivity extends AppCompatActivity {
              /*Intent it=new Intent(SecondActivity.this,VirturalCabinet.class);
              it.putExtra("ID",firebaseAuth.getCurrentUser().getUid());
              startActivity(it);*/
+                Intent it = new Intent(SecondActivity.this, QRcode.class);
+                String userID = firebaseAuth.getCurrentUser().getUid();
+                it.putExtra("userid",firebaseAuth.getCurrentUser().getUid());
+                startActivity(it);
+
             }
         });
         add.setOnClickListener(new View.OnClickListener() {

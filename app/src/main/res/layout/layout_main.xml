@@ -18,6 +18,7 @@
         android:onClick="OnClickShare"
         android:text="Next"
         android:textSize="15dp"
+        android:backgroundTintMode="add"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="376dp" />

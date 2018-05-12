@@ -37,7 +37,7 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
         Intent it=getIntent();
         ID = it.getStringExtra("ID");
         userID=it.getStringExtra("userid");
-       getNamePictures();
+        getNamePictures();
 
     }
     public void getNamePictures()
@@ -48,8 +48,7 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot ds:dataSnapshot.getChildren()) {
 
-                    String id = ds.child("ID").getValue().toString();
-
+                    String id = ds.child("id").getValue().toString();
                     if(ID.equals(id)) {
                         Calendar mCal = Calendar.getInstance();
                         CharSequence s = DateFormat.format("yyyy-MM-dd ", mCal.getTime());
@@ -60,8 +59,10 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
                         String tag  = ds.child("tag").getValue().toString();
                         String pitures = ds.child("imageURL").getValue().toString();
                         String price=ds.child("price").getValue().toString();
+                        String weather=ds.child("weather").getValue().toString();
+                        String category=ds.child("category").getValue().toString();
                         String date=s.toString();
-                        saveCloth(id,name,tag,pitures,price,date);
+                        saveCloth(id,name,tag,pitures,price,date,weather,category);
                         txv.setText(name);
                         Picasso.with(getApplicationContext()).load(pitures).into(post_image);
                     }
@@ -76,9 +77,11 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
         });
 
     }
-    public void saveCloth(String id,String name,String tag,String pictures,String price,String date)
+    public void saveCloth(String id,String name,String tag,String pictures,String price,String date,String weather,String category)
     {   mDatabase=FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("userGallery");
-        mDatabase.child(id).child("ID").setValue(id);
+        mDatabase.child(id).child("id").setValue(id);
+        mDatabase.child(id).child("weather").setValue(weather);
+        mDatabase.child(id).child("category").setValue(category);
         mDatabase.child(id).child("name").setValue(name);
         mDatabase.child(id).child("date").setValue(date);
         mDatabase.child(id).child("tag").setValue(tag);
@@ -121,5 +124,15 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-}
 
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        finish();
+        Intent i=new Intent(Intent.ACTION_MAIN);
+
+
+    }
+
+
+}
