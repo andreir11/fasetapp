@@ -58,37 +58,38 @@ tools:context="com.example.andre.fasetapp.MainActivity">
     app:layout_constraintTop_toBottomOf="@+id/etPassword"
     app:layout_constraintVertical_bias="0.154" />
 
-<TextView
-    android:id="@+id/tvInfo"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="8dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
-    android:text="No of attempts remaining:  "
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-    app:layout_constraintVertical_bias="0.344" />
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="No of attempts remaining:  "
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
+        app:layout_constraintVertical_bias="0.344" />
 
-<TextView
-    android:id="@+id/tvRegister"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="8dp"
-    android:layout_marginLeft="67dp"
-    android:layout_marginRight="8dp"
-    android:layout_marginTop="8dp"
-    android:text="New User? Sign Up!"
-    android:textSize="22sp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintHorizontal_bias="0.25"
-    app:layout_constraintLeft_toLeftOf="parent"
-    app:layout_constraintRight_toRightOf="parent"
-    app:layout_constraintTop_toBottomOf="@+id/tvInfo"
-    app:layout_constraintVertical_bias="0.379" />
+    <TextView
+        android:id="@+id/tvRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="67dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:text="New User? Sign Up!"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvInfo"
+        app:layout_constraintVertical_bias="0.0" />
 
 <TextView
     android:id="@+id/tvForgotPassword"
@@ -103,14 +104,5 @@ tools:context="com.example.andre.fasetapp.MainActivity">
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-    <Button
-        android:id="@+id/button5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        android:visibility="invisible"
-        tools:layout_editor_absoluteX="136dp"
-        tools:layout_editor_absoluteY="33dp" />
 
 </android.support.constraint.ConstraintLayout>

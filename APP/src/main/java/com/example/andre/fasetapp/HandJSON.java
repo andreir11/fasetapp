@@ -53,23 +53,22 @@ public class HandJSON {
             JSONArray list = reader.getJSONArray("list");
             DateFormat df = DateFormat.getDateTimeInstance();
             String updatedOn="";
-            int i=0;
-            while(i!=list.length()) {
+            for(int i=0;i<list.length();i++) {
                 JSONObject jsonObject = list.getJSONObject(i);
                 updatedOn = FORMATTER.format(new Date(jsonObject.getLong("dt")*1000));
                 if(updatedOn.equals(dateString))
-                {   temperature= new SimpleDateFormat("HH:mm  dd MMM yy").format(new Date(jsonObject.getLong("dt")*1000));
+                {
                     JSONObject main=jsonObject.getJSONObject("main");
-                    JSONObject weather=jsonObject.getJSONObject("weather");
-                    weather_type=weather.getString("main");
+                    JSONArray weather=jsonObject.getJSONArray("weather");
+                    weather_type=weather.getJSONObject(0).getString("main");
                     double temp= Double.parseDouble(main.getString("temp_max"));
                     temp+=0;
                     temperature =String.valueOf(temp);
                     break;}
                 else
-                {temperature=" ";}
-                i+=8;
-            }   //JSONObject jsonObject = list.getJSONObject(6);
+                {temperature="unknown";}
+                i+=7;
+            } //JSONObject jsonObject = list.getJSONObject(6);
             //temperature=updatedOn+"date:"+dateString;
             parsingComplete = false;
 

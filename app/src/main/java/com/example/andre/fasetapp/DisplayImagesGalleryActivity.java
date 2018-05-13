@@ -397,6 +397,7 @@ public class DisplayImagesGalleryActivity extends AppCompatActivity implements R
 
     @Override
     public void onBackPressed() {        // to prevent irritating accidental logouts
+        finish();
         startActivity(new Intent(DisplayImagesGalleryActivity.this, SecondActivity.class));
             super.onBackPressed();       // bye
         }

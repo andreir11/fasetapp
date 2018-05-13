@@ -47,7 +47,8 @@
         android:layout_alignEnd="@+id/buttonToSelectCollection"
         android:layout_below="@+id/weath"
         android:layout_marginEnd="22dp"
-        app:srcCompat="@color/white" />
+       android:background="@drawable/image_border"
+        />
 
     <Button
         android:id="@+id/buttonToSelectCollection"
@@ -117,7 +118,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/weath"
-        android:text="天氣:"
         android:textSize="24sp" />
 
 </RelativeLayout>

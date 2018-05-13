@@ -34,7 +34,7 @@ import java.util.Date;
 import butterknife.BindView;
 
 public class CalendarActivity extends AppCompatActivity{
-    private String url1 = "http://api.openweathermap.org/data/2.5/forecast?q=Taichung&units=metric&appid=4b391b238bdfdf6a39509a9cd4bbf2cb";
+    private String url1 = "http://api.openweathermap.org/data/2.5/forecast?q=Chiayi&units=metric&appid=4b391b238bdfdf6a39509a9cd4bbf2cb";
     private HandJSON obj;
     FirebaseAuth firebaseAuth;
     private FirebaseStorage firebaseStorage;
@@ -73,14 +73,17 @@ public class CalendarActivity extends AppCompatActivity{
 /*
         widget.setOnDateChangedListener(this);
         widget.setOnMonthChangedListener(this);
+
         //Setup initial text
         textView.setText(getSelectedDatesString());
+
 */
       /*  BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavView_Bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(0);
         menuItem.setChecked(true);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -89,24 +92,34 @@ public class CalendarActivity extends AppCompatActivity{
                         Intent intent1 = new Intent(CalendarActivity.this, SecondActivity.class);
                         startActivity(intent1);
                         break;
+
                     case R.id.ic_android:
+
                         break;
+
                     case R.id.ic_books:
                         Intent intent2 = new Intent(CalendarActivity.this, GalleryActivity.class);
                         startActivity(intent2);
                         break;
+
                     case R.id.ic_center_focus:
                         Intent intent3 = new Intent(CalendarActivity.this, DisplayImagesActivity.class);
                         startActivity(intent3);
                         break;
+
                     case R.id.ic_backup:
                         Intent intent4 = new Intent(CalendarActivity.this, ProfileActivity.class);
                         startActivity(intent4);
                         break;
+
+
                 }
+
+
                 return false;
             }
         });
+
 */
         imageD.setVisibility(View.INVISIBLE);
         buttonToSelectC.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +174,6 @@ public class CalendarActivity extends AppCompatActivity{
 
 
 
-
         materialCalendarView.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, CalendarDay date, boolean selected) {
@@ -174,28 +186,27 @@ public class CalendarActivity extends AppCompatActivity{
                 String ab = aa.toString();
 
                 //weather and Json
-                obj = new HandJSON(url1, aa);
+                obj = new HandJSON(url1, ab);
                 obj.fetchJSON();
                 weather=(TextView)findViewById(R.id.weath);
                 while(obj.parsingComplete);
-                {   weathtxv.setText("天氣: ");
-                    if(obj.getTemperature().equals(" ")) {
+                {   weathtxv.setText("天氣:");
+                    if(obj.getTemperature().equals("unknown")) {
                         weather.setText("今日平均溫度: 暫時不提供");
                         weatherimage.setImageResource(R.drawable.unknown);
                     }
                     else
-                        weather.setText("今日平均溫度:"+obj.getTemperature()+" (°C)");
-                    {
+                    {  weather.setText("今日平均溫度:"+obj.getTemperature()+" (°C)");
                         switch (obj.getWeather_type())
                         {
                             case "Rain":
-                                weatherimage.setImageResource(R.drawable.rain);
-                                break;
-                            case "Clouds":
-                                weatherimage.setImageResource(R.drawable.cloud);
+                                weatherimage.setImageResource(R.drawable.rainy);
                                 break;
                             case "Clear":
-                                weatherimage.setImageResource(R.drawable.sun);
+                                weatherimage.setImageResource(R.drawable.sunn);
+                                break;
+                            case "Clouds":
+                                weatherimage.setImageResource(R.drawable.clounds);
                                 break;
                         }
                     }
@@ -222,6 +233,10 @@ public class CalendarActivity extends AppCompatActivity{
                                 String Title = (String) singleSnapshot.child("imageURL").getValue();
                                 Glide.with(CalendarActivity.this).load(Title).override(300, 200).into(imageD);
                                 //textView4.setText(Title);
+                            }
+
+                            else{
+                                Toast.makeText(getApplicationContext(), "No record on " + aa, Toast.LENGTH_LONG).show();
                             }
                         }
                     }
@@ -250,10 +265,12 @@ public class CalendarActivity extends AppCompatActivity{
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         textView.setText(getSelectedDatesString());
     }
+
     @Override
     public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
         //getSupportActionBar().setTitle(FORMATTER.format(date.getDate()));
     }
+
     private String getSelectedDatesString() {
         CalendarDay date = widget.getSelectedDate();
         if (date == null) {
