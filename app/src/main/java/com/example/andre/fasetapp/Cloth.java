@@ -9,7 +9,45 @@ public class Cloth {
     private String imageURL;
     private String category;
     private String ID;
-    private String weather;
+    private String sleeve;
+    private String season;
+    private String brand;
+    private String size;
+
+    public String getSleeve() {
+        return sleeve;
+    }
+
+    public void setSleeve(String sleeve) {
+        this.sleeve = sleeve;
+    }
+
+    public String getSize() {
+        return size;
+
+    }
+
+    public void setSize(String size) {
+        this.size = size;
+    }
+
+    public String getSeason() {
+
+        return season;
+    }
+
+    public void setSeason(String season) {
+        this.season = season;
+    }
+
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
     public String getID() {
         return ID;
@@ -27,13 +65,6 @@ public class Cloth {
         return category;
     }
 
-    public String getWeather() {
-        return weather;
-    }
-
-    public void setWeather(String weather) {
-        this.weather = weather;
-    }
 
     public void setCategory(String category) {
         this.category = category;

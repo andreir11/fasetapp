@@ -59,10 +59,13 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
                         String tag  = ds.child("tag").getValue().toString();
                         String pitures = ds.child("imageURL").getValue().toString();
                         String price=ds.child("price").getValue().toString();
-                        String weather=ds.child("weather").getValue().toString();
                         String category=ds.child("category").getValue().toString();
+                        String size=ds.child("size").getValue().toString();
+                        String season=ds.child("season").getValue().toString();
+                        String sleeve=ds.child("sleeve").getValue().toString();
+                        String brand=ds.child("brand").getValue().toString();
                         String date=s.toString();
-                        saveCloth(id,name,tag,pitures,price,date,weather,category);
+                        saveCloth(id,name,tag,pitures,price,date,category,size,season,sleeve,brand);
                         txv.setText(name);
                         Picasso.with(getApplicationContext()).load(pitures).into(post_image);
                     }
@@ -77,16 +80,19 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
         });
 
     }
-    public void saveCloth(String id,String name,String tag,String pictures,String price,String date,String weather,String category)
+    public void saveCloth(String id,String name,String tag,String pictures,String price,String date,String category,String size,String season,String sleeve,String brand)
     {   mDatabase=FirebaseDatabase.getInstance().getReference().child("users").child(userID).child("userGallery");
         mDatabase.child(id).child("id").setValue(id);
-        mDatabase.child(id).child("weather").setValue(weather);
         mDatabase.child(id).child("category").setValue(category);
         mDatabase.child(id).child("name").setValue(name);
         mDatabase.child(id).child("date").setValue(date);
         mDatabase.child(id).child("tag").setValue(tag);
         mDatabase.child(id).child("price").setValue(price);
         mDatabase.child(id).child("imageURL").setValue(pictures);
+        mDatabase.child(id).child("size").setValue(size);
+        mDatabase.child(id).child("sleeve").setValue(sleeve);
+        mDatabase.child(id).child("season").setValue(season);
+        mDatabase.child(id).child("brand").setValue(brand);
     }
 
     public void initialActionbar()
@@ -124,15 +130,5 @@ public class save extends AppCompatActivity implements NavigationView.OnNavigati
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    @Override
-    public void onBackPressed(){
-        super.onBackPressed();
-        finish();
-        Intent i=new Intent(Intent.ACTION_MAIN);
-
-
-    }
-
-
 }
+

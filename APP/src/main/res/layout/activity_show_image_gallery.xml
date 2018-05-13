@@ -9,7 +9,7 @@
     <ImageView
         android:id="@+id/imageContainer"
         android:layout_width="161dp"
-        android:layout_height="152dp"
+        android:layout_height="164dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -45,7 +45,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Name"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textAlias" />
 
@@ -59,7 +59,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Category"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
@@ -73,7 +73,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Brand"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView15" />
 
@@ -87,7 +87,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Slevees/Length"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
@@ -101,7 +101,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Price"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
@@ -116,7 +116,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Season"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -130,7 +130,7 @@
         android:drawablePadding="2dp"
         android:gravity="left|center|end"
         android:text="Tag"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -143,7 +143,7 @@
         android:drawableLeft="@drawable/baseline_details_black_18dp"
         android:gravity="left|center|end"
         android:text="Size"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
@@ -157,7 +157,7 @@
         android:drawableLeft="@drawable/baseline_date_range_black_18dp"
         android:gravity="left|center|end"
         android:text="Date Insert"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonEditAttr"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView13"
@@ -172,7 +172,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Name"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toRightOf="@+id/textView7"
@@ -188,7 +188,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Category"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.986"
         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -203,7 +203,7 @@
         android:layout_marginTop="40dp"
         android:gravity="right|center|end"
         android:text="Brand"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -218,7 +218,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Sleeves"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -233,7 +233,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Price"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView10"
@@ -248,7 +248,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Season"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView11"
@@ -265,7 +265,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Tag"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView12"
@@ -280,7 +280,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Size"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView13"
@@ -295,7 +295,7 @@
         android:layout_marginTop="8dp"
         android:gravity="right|center|end"
         android:text="Date"
-        android:textSize="18sp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/textView14"
