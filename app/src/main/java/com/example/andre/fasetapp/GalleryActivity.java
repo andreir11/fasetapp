@@ -843,7 +843,7 @@ public class GalleryActivity extends AppCompatActivity {
 
             // Creating second StorageReference.
            final String ImageUploadId = databaseReference.push().getKey();
-            StorageReference storageReference2nd = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path).child(ImageUploadId).child(ImageName.getText().toString()+ "." + GetFileExtension(FilePathUri));
+            StorageReference storageReference2nd = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(Storage_Path + System.currentTimeMillis()  + ".jpg" );
 
 
             // Adding addOnSuccessListener to second StorageReference.

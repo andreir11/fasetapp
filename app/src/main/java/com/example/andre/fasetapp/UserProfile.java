@@ -8,13 +8,15 @@ public class UserProfile {
     public String userEmail;
     public String userName;
     public String userUid;
+    public String userSex;
     public UserProfile(){
     }
 
-    public UserProfile(String userAge, String userEmail, String userName) {
+    public UserProfile(String userAge, String userEmail, String userName, String userSex) {
         this.userAge = userAge;
         this.userEmail = userEmail;
         this.userName = userName;
+        this.userSex = userSex;
         //this.userUid = userUid;
     }
 
@@ -36,6 +38,14 @@ public class UserProfile {
 
     public String getUserName() {
         return userName;
+    }
+
+    public String getUserSex() {
+        return userSex;
+    }
+
+    public void setUserSex(String userSex) {
+        this.userSex = userSex;
     }
 
     public void setUserName(String userName) {

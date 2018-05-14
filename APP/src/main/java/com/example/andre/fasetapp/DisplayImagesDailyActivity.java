@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
@@ -48,22 +49,22 @@ import java.util.List;
 public class DisplayImagesDailyActivity extends AppCompatActivity implements RecyclerViewwAdapterrr.OnItemClickListener {
 
     // Creating DatabaseReference.
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, databaseRef;
     private FirebaseStorage mStorage;
     private ValueEventListener mDBListener;
     // Creating RecyclerView.
     RecyclerView recyclerView;
-
+    String[] listitems;
     // Creating RecyclerView.Adapter.
     RecyclerViewwAdapterrr adapter;
     FirebaseAuth firebaseAuth;
     // Creating Progress dialog
     ProgressDialog progressDialog;
-
+    private Button btnSort;
     public Button buttonToPick;
     // Creating List of ImageUploadInfo class.
     List<ImageUploadInfo> list = new ArrayList<>();
-    String date;
+    String date, temp , type;
     TextView tx;
     StorageReference storageReference;
     Uri imageUri;
@@ -77,16 +78,19 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         setContentView(R.layout.activity_display_images_daily);
         //buttonToPick = (Button)findViewById(R.id.buttonToP);
         img = (ImageView)findViewById(R.id.imageViewInvisible) ;
+        btnSort = (Button) findViewById(R.id.buttonSorting);
 
         getSupportActionBar().setTitle("Choose Outfit");
         Intent intent = getIntent();
         date = intent.getStringExtra("CatchDate");
+        temp = intent.getStringExtra("temp");
+        type = intent.getStringExtra("weatherType");
 
         tx = (TextView)findViewById(R.id.textView6) ;
-        //tx.setText(date);
-
-
-
+        //tx.setText(date + temp +type );
+        //tx.setText("asdasdasafsfasfasfasfasfasfasfasfafasfasfasfasfasfasfasf");
+        //Toast.makeText(getApplicationContext(),"No Button Clicked " +temp,Toast.LENGTH_SHORT).show();
+        //tx.setText(temp + "   " + type);
         firebaseAuth = FirebaseAuth.getInstance();
         // Assign id to RecyclerView.
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -118,6 +122,101 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         // Setting up Firebase image upload folder path in databaseReference.
         // The path is already defined in MainActivity.
         databaseReference = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userCollage");
+        databaseRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getUid()).child("userDailyWear");
+
+        btnSort.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                listitems = new String[]{"All","Casual",
+                        "Party",
+                        "Formal",
+                        "Comfy",
+                        "Sport"};
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DisplayImagesDailyActivity.this);
+                mBuilder.setTitle("Sort By :");
+                mBuilder.setIcon(R.drawable.icon);
+                mBuilder.setSingleChoiceItems(listitems, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        btnSort.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        String item = listitems[i].toString();
+
+                        if(listitems[i] == "All"){
+                            mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+
+                                    list.clear();
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                                        imageUploadInfo.setKey(postSnapshot.getKey());
+                                        list.add(imageUploadInfo);
+                                    }
+                                    adapter.notifyDataSetChanged();
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+
+                                }
+                            });
+
+                        }
+
+                        else {
+
+                            Query query = databaseReference.orderByChild("category").equalTo(listitems[i]);
+                            // Adding Add Value Event Listener to databaseReference.
+                            mDBListener = query.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+
+                                    list.clear();
+                                    for (DataSnapshot postSnapshot : snapshot.getChildren()) {
+                                        ImageUploadInfo imageUploadInfo = postSnapshot.getValue(ImageUploadInfo.class);
+                                        imageUploadInfo.setKey(postSnapshot.getKey());
+                                        list.add(imageUploadInfo);
+                                    }
+                                    adapter.notifyDataSetChanged();
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                    // Hiding the progress dialog.
+                                    progressDialog.dismiss();
+
+                                }
+                            });
+
+
+                        }
+                    }
+                });
+                mBuilder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                AlertDialog mDialog = mBuilder.create();
+                mDialog.show();
+            }
+        });
+
 
         // Adding Add Value Event Listener to databaseReference.
         mDBListener = databaseReference.addValueEventListener(new ValueEventListener() {
@@ -187,12 +286,14 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
 
 
                 // Adding image upload id s child element into databaseReference.
-                databaseReference.child(ImageUploadId).setValue(imageUploadInfo);
+                databaseRef.child(ImageUploadId).setValue(imageUploadInfo);
 
                 //finish();
                 Intent i = new Intent(DisplayImagesDailyActivity.this, CalendarActivity.class);
                 i.setFlags(i.FLAG_ACTIVITY_CLEAR_TASK);
+
                 startActivity(i);
+                finish();
                 //startActivity(n
 
 
@@ -226,20 +327,43 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         /*Glide.with(this)
                 .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/image%2Fwhite_1.jpg?alt=media&token=c6cd5a49-7e5f-4352-9f02-5a7a5fcb4ccc")
                 .into(img);*/
-        final ImageUploadInfo selectedItem = list.get(position);
+
+        ImageUploadInfo selectedItem = list.get(position);
         final String selectedKey = selectedItem.getKey();
-        name = selectedItem.getImageName();
+
         StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
-        Glide.with(this)
-                .load(selectedItem.getImageURL())
-                .into(img);
-        //UploadImageFileToFirebaseStorage();
+        Intent i = new Intent(DisplayImagesDailyActivity.this , ShowImageGalleryOfCollage.class);
+        i.putExtra("imgName",selectedItem.getImageName());
+        i.putExtra("link",selectedItem.getImageURL());
+        i.putExtra("imgId",selectedItem.getid());
+        /*i.putExtra("imgId", selectedItem.getid());
+        i.putExtra("link", selectedItem.getImageURL());
+        i.putExtra("alias", selectedItem.getname());
+        i.putExtra("date", selectedItem.getdate());
+        i.putExtra("price", selectedItem.getprice());
+        i.putExtra("tag", selectedItem.gettag());*/
+        startActivity(i);
+        //Toast.makeText(this, "Whatever click at position: " + position, Toast.LENGTH_SHORT).show();
+    }
 
 
 
+    @Override
+    public void onDeleteClick(int position) {
+        ImageUploadInfo selectedItem = list.get(position);
+        final String selectedKey = selectedItem.getKey();
 
-
-
+        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
+        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                databaseReference.child(selectedKey).removeValue();
+                Toast.makeText(DisplayImagesDailyActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
+            }
+        });
+        /*Glide.with(this)
+                .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/4j4AfAqmPcPzVwOshvHwouhLvVw1%2FAll_Image_Uploads%2Fsample_5.jpg?alt=media&token=3b9dc544-53d1-47fb-b995-497693e644b0")
+                .into(img1);*/
 
     }
 
@@ -361,36 +485,7 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         return returnedBitmap;
     }
 
-    @Override
-    public void onDeleteClick(int position) {
-        /*ImageUploadInfo selectedItem = list.get(position);
-        final String selectedKey = selectedItem.getKey();
 
-        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
-        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                databaseReference.child(selectedKey).removeValue();
-                Toast.makeText(DisplayImagesGalleryActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
-        Glide.with(this)
-                .load("https://firebasestorage.googleapis.com/v0/b/fasetapp-e5b56.appspot.com/o/4j4AfAqmPcPzVwOshvHwouhLvVw1%2FAll_Image_Uploads%2Fsample_5.jpg?alt=media&token=3b9dc544-53d1-47fb-b995-497693e644b0")
-                .into(img1);*/
-
-        ImageUploadInfo selectedItem = list.get(position);
-        final String selectedKey = selectedItem.getKey();
-
-        StorageReference imageRef = mStorage.getReferenceFromUrl(selectedItem.getImageURL());
-        imageRef.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                databaseReference.child(selectedKey).removeValue();
-                Toast.makeText(DisplayImagesDailyActivity.this, "Item deleted", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-    }
 
 
 
@@ -413,7 +508,9 @@ public class DisplayImagesDailyActivity extends AppCompatActivity implements Rec
         switch(item.getItemId()){
             case R.id.AddMenu:{
                 Intent i = new Intent(DisplayImagesDailyActivity.this, PickFashion1.class);
-                i.putExtra("Catch",date);
+                i.putExtra("CatchDate",date);
+                i.putExtra("temp",temp);
+                i.putExtra("type",type);
                 //finish();
                 startActivity(i);
                 break;

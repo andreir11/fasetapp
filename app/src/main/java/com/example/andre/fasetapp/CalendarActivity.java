@@ -43,6 +43,8 @@ public class CalendarActivity extends AppCompatActivity{
     Button buttonToSelectC;
     Button buttonToSelectD;
     TextView weather,weathtxv;
+    String recommendTemp, recommendWeatherType;
+
 
     private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
     @BindView(R.id.calendarView)
@@ -127,6 +129,8 @@ public class CalendarActivity extends AppCompatActivity{
             public void onClick(View view) {
                 Intent i = new Intent(CalendarActivity.this, DisplayImagesDailyActivity.class);
                 i.putExtra("CatchDate",aa);
+                i.putExtra("temp",recommendTemp);
+                i.putExtra("weatherType",recommendWeatherType);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 //onStop();
                 //finish();
@@ -212,7 +216,10 @@ public class CalendarActivity extends AppCompatActivity{
                     }
                 }
 
-
+               recommendTemp = obj.getTemperature().toString();
+                //int recommendTempInt = obj.getTemperature();
+                recommendWeatherType = obj.getWeather_type().toString();
+                //Toast.makeText(getApplicationContext(), "No record on " + recommendTemp + " "+ recommendWeatherType + " " , Toast.LENGTH_LONG).show();
                 FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
                 DatabaseReference myRef = firebaseDatabase.getReference("users");
                 textView4.setText(aa.toString());

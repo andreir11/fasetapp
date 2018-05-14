@@ -1,5 +1,8 @@
 package com.example.andre.fasetapp;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -9,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -29,19 +33,22 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RegistrationActivity extends AppCompatActivity{
 
-    private EditText userName, userPassword, userEmail, userAge;
+    private EditText userName, userPassword, userEmail, userAge, userSex;
     private Button regButton;
     private TextView userLogin;
     private FirebaseAuth firebaseAuth;
     private ImageView userProfilePic;
-    String email, name, age, password;
+    String email, name, age, password, sex;
     private FirebaseStorage firebaseStorage;
     private static int PICK_IMAGE = 123;
+    String itemCategory;
     Uri imagePath;
     private StorageReference storageReference;
 
@@ -83,7 +90,70 @@ public class RegistrationActivity extends AppCompatActivity{
                 startActivityForResult(Intent.createChooser(intent, "select image"), PICK_IMAGE);
             }
         });*/
+        userSex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final String[] category = new String[]{
 
+                        "Male",
+                        "Female"
+                };
+
+                // Boolean array for initial selected items
+
+                final List<String> categoryList = Arrays.asList(category);
+
+                //ImageTag.setRawInputType(Configuration.KEYBOARDHIDDEN_YES);
+                AlertDialog.Builder builder = new AlertDialog.Builder(RegistrationActivity.this);
+
+                builder.setIcon(R.drawable.icon);
+                // Set a title for alert dialog
+                builder.setTitle("Category");
+
+                InputMethodManager im = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                im.hideSoftInputFromWindow(userName.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(userEmail.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(userPassword.getWindowToken(), 0);
+                im.hideSoftInputFromWindow(userAge.getWindowToken(), 0);
+
+                builder.setSingleChoiceItems(category, -1, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //ImageTag.setText("Sort By : " +listitems[i]);
+                        dialogInterface.dismiss();
+                        itemCategory = category[i].toString();
+                        userSex.setText(itemCategory);
+
+
+
+                    }
+                });
+
+                /*
+                // Set the negative/no button click listener
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the negative button
+                    }
+                });*/
+
+                // Set the neutral/cancel button click listener
+                builder.setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Do something when click the neutral button
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                // Display the alert dialog on interface
+                dialog.show();
+
+
+            }
+
+        });
 
 
         regButton.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +206,7 @@ public class RegistrationActivity extends AppCompatActivity{
         regButton = (Button)findViewById(R.id.btnRegister);
         userLogin = (TextView)findViewById(R.id.tvUserLogin);
         userAge = (EditText)findViewById(R.id.etAge);
+        userSex  = (EditText)findViewById(R.id.etSex);
         userProfilePic = (ImageView)findViewById(R.id.ivProfile);
 
         userName.setOnEditorActionListener(new DoneOnEditorActionListener());
@@ -152,6 +223,7 @@ public class RegistrationActivity extends AppCompatActivity{
         password = userPassword.getText().toString();
         email = userEmail.getText().toString();
         age = userAge.getText().toString();
+        sex = itemCategory;
 
         /*String passwordHandler = password.getText().toString();
         if (password.isEmpty() || password.length() < 6) {  passwordText.setError("Password cannot be less than 6 characters!");
@@ -172,6 +244,10 @@ public class RegistrationActivity extends AppCompatActivity{
 
         if(TextUtils.isEmpty(email)){
             userEmail.setError("E-mail field cannot be empty");
+        }
+
+        if(TextUtils.isEmpty(sex)){
+            userEmail.setError("Choose your sex");
         }
 
        /*
@@ -288,7 +364,7 @@ public class RegistrationActivity extends AppCompatActivity{
         });*/
 
 
-        UserProfile userProfile = new UserProfile(age, email, name);
+        UserProfile userProfile = new UserProfile(age, email, name, sex);
         myRef.child(firebaseAuth.getUid()).child("userInfo").setValue(userProfile);
     }
 }

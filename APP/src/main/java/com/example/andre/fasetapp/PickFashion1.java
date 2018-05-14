@@ -47,12 +47,12 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
     public ImageView imgChoose1;
     public ImageView imgChoose2;
     public ImageView imgChoose3;
-    public ImageView imgChoose4;
+    public ImageView imgChoose4, tempImage;
     public Button OnClickShare;
     RelativeLayout idForSaveView;
     // Creating RecyclerView.
     RecyclerView recyclerView;
-    public TextView textDisplay;
+    public TextView textDisplay, textrecom,textrecom1;
     // Creating RecyclerView.Adapter.
     RecyclerViewAdapterr adapter;
     FirebaseAuth firebaseAuth;
@@ -76,7 +76,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
 
     private FirebaseStorage mStorage;
     ImageView img;
-    private String date;
+    private String date, temp, type;
 
     private ValueEventListener mDBListener;
 
@@ -85,6 +85,9 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick_fashion1);
         textDisplay = (TextView) findViewById(R.id.textView1);
+        textrecom = (TextView) findViewById(R.id.textrecommend);
+        textrecom1 = (TextView) findViewById(R.id.textrecommend4);
+        tempImage = (ImageView) findViewById(R.id.imageView6);
         //imgChoose = (ImageView)findViewById(R.id.imageView9);
         firebaseAuth = FirebaseAuth.getInstance();
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
@@ -116,8 +119,38 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
 
         Intent intent = getIntent();
         date = intent.getStringExtra("CatchDate");
-        //textDisplay.setText(date);
-        // Setting RecyclerView size true.
+        temp = intent.getStringExtra("temp");
+        type = intent.getStringExtra("type");
+
+        switch (type)
+        {
+            case "Rain":
+                tempImage.setImageResource(R.drawable.rainy);
+                break;
+            case "Clear":
+                tempImage.setImageResource(R.drawable.sunn);
+                break;
+            case "Clouds":
+                tempImage.setImageResource(R.drawable.clounds);
+                break;
+        }
+
+
+
+        double tempRecommend= Double.parseDouble(temp);
+        if(tempRecommend>=20 && tempRecommend <= 22){
+            textrecom.setText("Weather : "+type+ ", "+tempRecommend+"(°C). ");
+            textrecom1.setText("Suggestion : a short or long sleeve T-shirt");
+        }
+
+        if(tempRecommend >= 22)
+        {
+            textrecom.setText("Weather : "+type+ ", "+tempRecommend+"(°C). ");
+            textrecom1.setText("Suggestion : a short sleeve T-shirt");
+        }
+
+
+        //textrecom.setText();        // Setting RecyclerView size true.
         recyclerView.setHasFixedSize(true);
         // Setting RecyclerView layout as LinearLayout.
         //recyclerView.setLayoutManager(new LinearLayoutManager(DisplayImagesActivity.this));
@@ -214,6 +247,7 @@ public class PickFashion1 extends AppCompatActivity implements RecyclerViewAdapt
             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
             intent.putExtra("CatchDate", date);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            //Toast.makeText(this, "date " + date , Toast.LENGTH_SHORT).show();
             //finish();
             startActivity(intent);
             /*

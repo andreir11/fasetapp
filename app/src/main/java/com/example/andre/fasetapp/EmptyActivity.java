@@ -50,6 +50,7 @@ public class EmptyActivity extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     EditText CollectionName, ImageCategory;
     public String formattedDate, categoryHolder;
+    String date;
     String Storage_Path = "Collection_Image_Uploads/";
 
     // Root Database Name for Firebase Database.
@@ -75,6 +76,10 @@ public class EmptyActivity extends AppCompatActivity {
         ImageCategory = (EditText) findViewById(R.id.ImageCategoryEditText);
 
         progressDialog = new ProgressDialog(EmptyActivity.this);
+
+
+        date = intent.getStringExtra("CatchDate");
+
 
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
@@ -216,7 +221,7 @@ public class EmptyActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             String ImageUploadId = databaseReference.push().getKey();
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
 
                             @SuppressWarnings("VisibleForTests")
                             ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName, taskSnapshot.getDownloadUrl().toString(), formattedDate,categoryHolder);
@@ -228,6 +233,7 @@ public class EmptyActivity extends AppCompatActivity {
 
                             Intent i = new Intent(EmptyActivity.this, DisplayImagesDailyActivity.class);
                             i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP | i.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.putExtra("CatchDate", date);
                             startActivity(i);
                             Toast.makeText(EmptyActivity.this, "New Collage Has Been Uploaded", Toast.LENGTH_SHORT).show();
 

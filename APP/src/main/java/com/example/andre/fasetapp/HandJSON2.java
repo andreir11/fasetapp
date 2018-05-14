@@ -1,6 +1,5 @@
 package com.example.andre.fasetapp;
 
-
 import android.annotation.SuppressLint;
 
 import org.json.JSONArray;
@@ -9,68 +8,30 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
-public class HandJSON {
+public class HandJSON2 {
+
     private String country = "county";
-    private String temperature = "temperature";
-    private String humidity = "humidity";
-    private String pressure = "pressure";
+    private String weathers = " ";
     private String urlString = null;
     private String dateString="";
-    private String weather_type="";
 
     public volatile boolean parsingComplete = true;
-    public HandJSON(String url,String date){
+    public HandJSON2(String url,String date){
         this.urlString = url;
         this.dateString=date;
     }
-    private static final DateFormat FORMATTER = SimpleDateFormat.getDateInstance();
-    public String getCountry(){
-        return country;
-    }
-    public String getTemperature(){
-        return temperature;
-    }
-    public String getHumidity(){
-        return humidity;
-    }
-    public String getPressure(){
-        return pressure;
-    }
-    public String getWeather_type(){return weather_type; }
 
+    public String getWeatherStyle(){
+        return weathers;
+    }
     @SuppressLint("NewApi")
     public void readAndParseJSON(String in) {
         try {
             JSONObject reader = new JSONObject(in);
-
-            //JSONObject sys  = reader.getJSONObject("sys");
-            //country = sys.getString("country");
-
-            JSONArray list = reader.getJSONArray("list");
-            DateFormat df = DateFormat.getDateTimeInstance();
-            String updatedOn="";
-            for(int i=0;i<list.length();i++) {
-                JSONObject jsonObject = list.getJSONObject(i);
-                updatedOn = FORMATTER.format(new Date(jsonObject.getLong("dt")*1000));
-                if(updatedOn.equals(dateString))
-                {
-                    JSONObject main=jsonObject.getJSONObject("main");
-                    JSONArray weather=jsonObject.getJSONArray("weather");
-                    weather_type=weather.getJSONObject(0).getString("main");
-                    double temp= Double.parseDouble(main.getString("temp_max"));
-                    if(temp<26)
-                    {continue;}
-                    temperature =String.valueOf(temp);
-                    break;}
-                else
-                {temperature="unknown";}
-
-            } //JSONObject jsonObject = list.getJSONObject(6);
-            //temperature=updatedOn+"date:"+dateString;
+            JSONArray weather=reader.getJSONArray("weather");
+            JSONObject weather_style=weather.getJSONObject(0);
+            weathers=weather_style.getString("main");
             parsingComplete = false;
 
         } catch (Exception e) {

@@ -11,22 +11,59 @@
 
     <Button
 
-        android:layout_width="449dp"
+        android:layout_width="match_parent"
         android:layout_height="55dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
+        android:backgroundTintMode="add"
         android:onClick="OnClickShare"
         android:text="Next"
         android:textSize="15dp"
-        android:backgroundTintMode="add"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="376dp" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/idForSaveView"
+        android:layout_marginStart="8dp" />
+
+    <TextView
+        android:id="@+id/textrecommend"
+        android:layout_width="340dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/idForSaveView"
+        android:gravity="center_vertical|center_horizontal|fill_horizontal"
+        android:textColor="@color/colorcustom"
+        android:textSize="18sp"
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="350dp" />
+
+    <TextView
+        android:id="@+id/textrecommend4"
+        android:layout_width="340dp"
+        android:layout_height="25dp"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/textrecommend"
+        android:gravity="center_vertical|center_horizontal|fill_horizontal"
+        android:textColor="@color/colorcustom"
+        android:textSize="18sp"
+        android:visibility="visible"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="350dp" />
 
     <RelativeLayout
         android:id="@+id/idForSaveView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
         android:background="@color/common_google_signin_btn_text_dark_default"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp">
@@ -56,10 +93,10 @@
             android:id="@+id/imageView5"
             android:layout_width="150dp"
             android:layout_height="140dp"
-            android:layout_alignBottom="@+id/textView1"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="43dp"
-            android:layout_toStartOf="@+id/imageView11"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="11dp"
+            android:layout_marginTop="12dp"
+            android:layout_toStartOf="@+id/imageView8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView8"

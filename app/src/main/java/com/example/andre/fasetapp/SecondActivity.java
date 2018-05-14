@@ -1,11 +1,11 @@
 package com.example.andre.fasetapp;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.internal.BottomNavigationItemView;
-import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.NotificationCompat;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,10 +19,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.Calendar;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class SecondActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
+    private String url1 = "http://samples.openweathermap.org/data/2.5/weather?q=London,uk&appid=b6907d289e10d714a6e88b30761fae22";
+    private HandJSON2 obj;
     private TextView textViewUserId;
     private Button Clothecabinet;
     private Button customize;
@@ -44,7 +47,7 @@ public class SecondActivity extends AppCompatActivity {
         setContentView(R.layout.activity_second);
 
         firebaseAuth = FirebaseAuth.getInstance();
-
+        notifation();
         textViewUserId = (TextView)findViewById(R.id.textView);
         logout = (Button)findViewById(R.id.btnLogout);
         Clothecabinet= (Button)findViewById(R.id.clothecabinet);
@@ -178,6 +181,7 @@ public class SecondActivity extends AppCompatActivity {
         Intent it = new Intent(SecondActivity.this, QRcode.class);
         String userID = firebaseAuth.getCurrentUser().getUid();
         it.putExtra("userid",userID);
+        it.setFlags(it.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
 
     }
@@ -194,7 +198,34 @@ public class SecondActivity extends AppCompatActivity {
             super.onBackPressed();       // bye
         }
     }
+    public void notifation()
+    {   obj = new HandJSON2(url1,"1526158800");
+        obj.fetchJSON();
+        while(obj.parsingComplete);
 
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        Date dt=new Date();
+        String dts=sdf.format(dt);
 
+        if(dts.equals("02:23")) {
+            if (obj.getWeatherStyle().equals("Rain")) {
+                NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(SecondActivity.this)
+                        .setSmallIcon(android.R.drawable.stat_notify_error)
+                        .setContentTitle("Faset 今日小提醒")
+                        .setContentText("Weather : " + obj.getWeatherStyle() + " 建議:請寄得帶雨具");//get temperature  value
+                notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(SecondActivity.this);
+                notificationManager.notify(1, notificationBuilder.build());
+            } else {
+                NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(SecondActivity.this)
+                        .setSmallIcon(android.R.drawable.stat_notify_error)
+                        .setContentTitle("Faset 今日小提醒")
+                        .setContentText(" Weather : " + obj.getWeatherStyle());//get temperature  value
+                notificationBuilder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_LIGHTS | Notification.DEFAULT_VIBRATE);
+                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(SecondActivity.this);
+                notificationManager.notify(1, notificationBuilder.build());
 
+            }
+        }
+    }
 }

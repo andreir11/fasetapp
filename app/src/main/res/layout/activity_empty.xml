@@ -41,7 +41,6 @@
                 android:gravity="center_horizontal|center|start"
                 android:hint="Name"
                 android:imeOptions="actionDone"
-                android:selectAllOnFocus="false"
                 android:singleLine="true"
                 app:layout_constraintBottom_toTopOf="@+id/textInputLayout"
                 app:layout_constraintEnd_toEndOf="parent"

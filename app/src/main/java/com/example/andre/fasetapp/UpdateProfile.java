@@ -62,7 +62,7 @@ public class UpdateProfile extends AppCompatActivity {
                 String age = newUserAge.getText().toString();
                 String email = newUserEmail.getText().toString();
 
-                UserProfile userProfile = new UserProfile(age, email, name);
+                UserProfile userProfile = new UserProfile(age, email, name, "");
 
                 databaseReference.setValue(userProfile);
 

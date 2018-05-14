@@ -32,7 +32,9 @@ public class QRcode extends AppCompatActivity {
     }
     public void save(View view)
     {
+        finish();
         Intent it=new Intent(QRcode.this,save.class);//CALL Saved Class
+        //it.setFlags(it.FLAG_ACTIVITY_CLEAR_TASK | it.FLAG_ACTIVITY_CLEAR_TOP);
 
 
 
@@ -40,10 +42,13 @@ public class QRcode extends AppCompatActivity {
 
         it.putExtra("ID",str);//input value
         it.putExtra("userid",userID);
+
         startActivity(it);
+
     }
     public void cancel(View view)
     {
+        finish();
         Intent it=new Intent(QRcode.this,SecondActivity.class);
         it.setFlags(it.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(it);
@@ -71,4 +76,14 @@ public class QRcode extends AppCompatActivity {
 
         }
     }
+
+    @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent i=new Intent(Intent.ACTION_MAIN);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP );
+        finish();
+    }
+
+
 }

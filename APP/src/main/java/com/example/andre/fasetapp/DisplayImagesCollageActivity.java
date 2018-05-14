@@ -384,10 +384,14 @@ public class DisplayImagesCollageActivity extends AppCompatActivity implements R
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
-    public void onBackPressed() {        // to prevent irritating accidental logouts
-        startActivity(new Intent(DisplayImagesCollageActivity.this, SecondActivity.class));
-        super.onBackPressed();       // bye
+    public void onBackPressed(){
+        super.onBackPressed();
+        Intent i=new Intent(DisplayImagesCollageActivity.this,SecondActivity.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK );
+        startActivity(i);
+        //finish();
     }
 
 }

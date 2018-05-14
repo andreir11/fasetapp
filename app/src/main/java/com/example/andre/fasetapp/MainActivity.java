@@ -56,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         progressDialog = new ProgressDialog(this);
 
+
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
         test.setOnClickListener(new View.OnClickListener() {
             @Override

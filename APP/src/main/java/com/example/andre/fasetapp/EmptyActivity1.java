@@ -47,7 +47,7 @@ public class EmptyActivity1 extends AppCompatActivity {
     private String formattedDate;
 
     String Storage_Path = "Collection_Image_Uploads/";
-    private String dateOfDate, categoryHolder;
+    private String dateOfDate, categoryHolder, date;
     // Root Database Name for Firebase Database.
     public static final String Database_Path = "All_Image_Uploads_Database";
     ProgressDialog progressDialog ;
@@ -73,6 +73,9 @@ public class EmptyActivity1 extends AppCompatActivity {
 
         dateOfDate = getIntent().getStringExtra("CatchDate");
         //text.setText(date);
+
+        date = intent.getStringExtra("CatchDate");
+        //Toast.makeText(this, "date " + date , Toast.LENGTH_SHORT).show();
         imageUriOfPage = (Uri) intent.getData();
         //imageUriOfPage = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
         if (imageUriOfPage != null) {
@@ -209,7 +212,7 @@ public class EmptyActivity1 extends AppCompatActivity {
 
 
                             // Showing toast message after done uploading.
-                            Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), "Image Uploaded Successfully ", Toast.LENGTH_LONG).show();
                             String ImageUploadId = databaseReference.push().getKey();
                             @SuppressWarnings("VisibleForTests")
                             ImageUploadInfo imageUploadInfo = new ImageUploadInfo(ImageUploadId, TempImageName,taskSnapshot.getDownloadUrl().toString(),formattedDate,categoryHolder);
@@ -224,9 +227,10 @@ public class EmptyActivity1 extends AppCompatActivity {
                             Intent i = new Intent(EmptyActivity1.this, DisplayImagesCollageActivity.class);
                             finish();
                             i.setFlags(i.FLAG_ACTIVITY_CLEAR_TOP|i.FLAG_ACTIVITY_CLEAR_TASK);
+                            i.putExtra("CatchDate", date);
                             startActivity(i);
                             //startActivity(new Intent(EmptyActivity1.this, CalendarActivity.class));
-
+                            Toast.makeText(EmptyActivity1.this, "New Collage Has Been Uploaded", Toast.LENGTH_SHORT).show();
 
 
                             //Toast.makeText(EmptyActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();

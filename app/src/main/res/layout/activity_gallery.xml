@@ -55,7 +55,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp">
+                android:layout_marginTop="20dp">
 
                 <EditText
                     android:id="@+id/ImageNameEditText"
@@ -76,7 +76,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <EditText
                     android:id="@+id/ImageCategoryEditText"
@@ -96,7 +96,7 @@
                 android:id="@+id/ImageSleeveTextInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp">
+                android:layout_marginTop="20dp">
 
                 <EditText
                     android:id="@+id/ImageSleeveEditText"
@@ -117,7 +117,7 @@
                 android:layout_width="match_parent"
 
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="16dp">
 
                 <EditText
                     android:id="@+id/ImageBrandEditText"
@@ -137,7 +137,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="16dp">
 
                 <EditText
                     android:id="@+id/ImagePriceEditText"
@@ -158,7 +158,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <EditText
                     android:id="@+id/ImageSeasonEditText"
@@ -177,7 +177,7 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="20dp">
 
                 <EditText
                     android:id="@+id/ImageTagEditText"

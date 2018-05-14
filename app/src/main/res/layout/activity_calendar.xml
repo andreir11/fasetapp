@@ -42,13 +42,12 @@
 
     <ImageView
         android:id="@+id/imageDaily"
-        android:layout_width="155dp"
-        android:layout_height="120dp"
+        android:layout_width="160dp"
+        android:layout_height="130dp"
         android:layout_alignEnd="@+id/buttonToSelectCollection"
         android:layout_below="@+id/weath"
         android:layout_marginEnd="22dp"
-       android:background="@drawable/image_border"
-        />
+        android:background="@drawable/image_border" />
 
     <Button
         android:id="@+id/buttonToSelectCollection"
